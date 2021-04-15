@@ -6,6 +6,7 @@ import Graph.Node;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -38,19 +39,53 @@ public class Individual {
                 counter ++;
             }
         }
+        this.PrimMST(nodes);
         List<Edge> edges = new ArrayList<>();
         for (Node n : nodes) {
-            Edge northEdge = n.getEdgeNorth();
-            if (northEdge != null) {
-                edges.add(northEdge);
-            }
-            Edge westEdge = n.getEdgeWest();
-            if (westEdge != null) {
-                edges.add(westEdge);
+            for (Edge e : n.getEdges()) {
+                if (! edges.contains(e)) {
+                    edges.add(e);
+                }
             }
         }
-        for (Edge e : edges) {
-            System.out.println(e);
+        for (Edge e: edges) {
+            System.out.println("" + e +" - " + e.getDistance());
         }
+        System.out.println(" ");
+        for (Node n : nodes) {
+            System.out.println("Node " + n + " has direction: " + n.getDirection());
+        }
+    }
+
+    public void PrimMST(List<Node> nodesOriginalOrdering) {
+        List<Node> nodes = new ArrayList<>(nodesOriginalOrdering);
+        List<Edge> edges = new ArrayList<>();
+        for (Node n : nodes) {
+            for (Edge e : n.getEdges()) {
+                if (! edges.contains(e)) {
+                    edges.add(e);
+                }
+            }
+        }
+        Node treeFrom = nodes.get(5);
+        nodes.remove(5);
+        nodes.add(0, treeFrom);
+        System.out.println("Tree from node " + treeFrom);
+        treeFrom.setKey(0);
+        while (nodes.size() > 0) {
+            Node u = nodes.get(0);
+            nodes.remove(0);
+            for (Edge e : u.getEdges()) {
+                Node v = e.traverse(u);
+                if (nodes.contains(v) && e.getDistance() < v.getKey()) {
+                    v.setParent(u);
+                    v.setKey(e.getDistance());
+                    char direction = e.getTraverseDirection(v);
+                    v.setDirection(direction);
+                }
+            }
+            Collections.sort(nodes);  // Denne kan muligens bruke litt tid --> se på binary heaps
+        }
+
     }
 }
