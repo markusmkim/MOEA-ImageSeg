@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import EA.Components.Individual;
+import EA.Operations.Initializer;
 import javafx.application.Platform;
 import javafx.application.Application;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelReader;
+import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.application.Application;
@@ -32,15 +31,22 @@ public class Test extends Application {
     public void start(Stage stage) throws Exception {
         Test t = new Test();
         PixelReader pixelReader = t.image.getPixelReader();
-        Color color = pixelReader.getColor(3, 3);
-        double height = t.image.getHeight();
-        double width = t.image.getWidth();
+        Color color = pixelReader.getColor(1, 1);
+        int height = (int) Math.round(t.image.getHeight());
+        int width = (int) Math.round(t.image.getWidth());
         System.out.println("" + color.getGreen());
 
         System.out.println("Height: " + height + " - Width: " + width);
 
-        Individual ind = new Individual(3, 4);
+        // Individual ind = new Individual(3, 4);
+        List<Individual> population = Initializer.init(10, height, width, pixelReader);
 
+        System.out.println("\nPopulation: ");
+        for (Individual dude: population) {
+            System.out.println(dude);
+            dude.computeSegments();
+            dude.evaluate();
+        }
 
         ImageView iv1 = new ImageView();
         iv1.setImage(t.image);

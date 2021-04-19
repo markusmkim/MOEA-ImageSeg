@@ -1,13 +1,16 @@
 package Graph;
 
+import EA.Metrics;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+
 public class Node implements Comparable<Node> {
-    // A node in a rectangular grid. All nodes have 2 - 4 neighours (North, South, West, East)
+    // A node in a rectangular grid. All nodes have 2 - 4 neighbours (North, South, West, East)
     private final String id;
+    private final Color color;
 
     private Edge edgeEast;
     private Edge edgeWest;
@@ -20,20 +23,18 @@ public class Node implements Comparable<Node> {
     private char direction = '0';
 
 
-    // test
-    private final double value;
-
-    public Node(String id) {
+    public Node(String id, Color color) {
         this.id = id;
-        if (id.equals("A") || id.equals("C") || id.equals("G")) {
-            this.value = 100;
-        }
-        else if (id.equals("D") || id.equals("J") || id.equals("L")) {
-            this.value = 50;
-        }
-        else {
-            this.value = 4;
-        }
+        this.color = color;
+    }
+
+    public Node(String id, Edge edgeEast, Edge edgeWest, Edge edgeNorth, Edge edgeSouth, Color color) {
+        this.id = id;
+        this.edgeEast = edgeEast;
+        this.edgeWest = edgeWest;
+        this.edgeNorth = edgeNorth;
+        this.edgeSouth = edgeSouth;
+        this.color = color;
     }
 
 
@@ -71,7 +72,8 @@ public class Node implements Comparable<Node> {
 
     public void setEdgeEast(Node neighbourEast) {
         if (this.edgeEast == null) {
-            Edge edge = new Edge(this, neighbourEast, true, this.value);
+            double distance = Metrics.distance(this.color, neighbourEast.color);
+            Edge edge = new Edge(this, neighbourEast, true, distance);
             this.edgeEast = edge;
             neighbourEast.setEdgeWest(edge);
         }
@@ -79,7 +81,8 @@ public class Node implements Comparable<Node> {
 
     public void setEdgeWest(Node neighbourWest) {
         if (this.edgeWest == null) {
-            Edge edge = new Edge(this, neighbourWest, true, value);
+            double distance = Metrics.distance(this.color, neighbourWest.color);
+            Edge edge = new Edge(this, neighbourWest, true, distance);
             this.edgeWest = edge;
             neighbourWest.setEdgeEast(edge);
         }
@@ -87,7 +90,8 @@ public class Node implements Comparable<Node> {
 
     public void setEdgeNorth(Node neighbourNorth) {
         if (this.edgeNorth == null) {
-            Edge edge = new Edge(this, neighbourNorth, false, value);
+            double distance = Metrics.distance(this.color, neighbourNorth.color);
+            Edge edge = new Edge(this, neighbourNorth, false, distance);
             this.edgeNorth = edge;
             neighbourNorth.setEdgeSouth(edge);
         }
@@ -95,10 +99,23 @@ public class Node implements Comparable<Node> {
 
     public void setEdgeSouth(Node neighbourSouth) {
         if (this.edgeSouth == null) {
-            Edge edge = new Edge(this, neighbourSouth, false, value);
+            double distance = Metrics.distance(this.color, neighbourSouth.color);
+            Edge edge = new Edge(this, neighbourSouth, false, distance);
             this.edgeSouth = edge;
             neighbourSouth.setEdgeNorth(edge);
         }
+    }
+
+
+    public Node getClone() {
+        return new Node(this.id, this.edgeEast, this.edgeWest, this.edgeNorth, this.edgeSouth, this.color);
+    }
+
+
+    public void resetTreeValues() {
+        this.key = 1000000;
+        this.parent = null;
+        this.direction = '0';
     }
 
 
@@ -109,6 +126,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
-        return (int) Math.round(key - o.getKey());
+        return Double.compare(key, o.getKey());
+        // (int) Math.round(key - o.getKey());
     }
 }
