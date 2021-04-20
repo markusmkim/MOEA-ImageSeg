@@ -51,7 +51,7 @@ public class Test extends Application {
         ImageView iv1 = new ImageView();
         iv1.setImage(t.image);
         ImageView iv2 = new ImageView();
-        iv2.setImage(t.image);
+        iv2.setImage(population.get(0).constructPhenotype());
 
         Group root = new Group();
         Scene scene = new Scene(root);

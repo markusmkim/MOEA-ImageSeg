@@ -1,6 +1,9 @@
 package EA.Components;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.util.*;
@@ -39,6 +42,35 @@ public class Individual {
             }
         }
         System.out.println(c);
+    }
+
+
+    public Image constructPhenotype() {
+        WritableImage image = new WritableImage(this.pixelReader, this.width, this.height);
+        PixelWriter pixelWriter = image.getPixelWriter();
+
+        for (int i = 0; i < this.genotype.length(); i++) {
+            int[] coordinates = this.convertIndexToCoordinates(i, this.width);
+            int[] neighbourIndexes = this.getNeighbourIndexes(i, this.height, this.width);
+            for (int j = 0; j < neighbourIndexes.length; j++) {
+                // System.out.println(neighbourIndexes[j]);
+                if (neighbourIndexes[j] == -1 || !this.pixelSegmentKeys.get(i).equals(this.pixelSegmentKeys.get(neighbourIndexes[j]))) {
+                    pixelWriter.setColor(coordinates[0], coordinates[1], Color.PINK);
+                    int oppositeIndex;
+                    if (j < 2) {
+                        oppositeIndex = (j + 1) % 2;
+                    }
+                    else {
+                        oppositeIndex = ((j - 1) % 2) + 2;
+                    }
+                    int[] c = this.convertIndexToCoordinates(neighbourIndexes[oppositeIndex], this.width);
+                    if (0 <= c[0] && c[0] < this.width && 0 <= c[1] && c[1] < this.height) {
+                        pixelWriter.setColor(c[0], c[1], Color.PINK);
+                    }
+                }
+            }
+        }
+        return image;
     }
 
 
@@ -112,6 +144,27 @@ public class Individual {
     private Color getPixelColor(int index) {
         int[] imageCoordinates = this.convertIndexToCoordinates(index, this.width);
         return this.pixelReader.getColor(imageCoordinates[0], imageCoordinates[1]);
+    }
+
+    private int[] getNeighbourIndexes(int index, int height, int width) {
+        int[] coordinates = this.convertIndexToCoordinates(index, width);
+        int east = index + 1;
+        int west = index - 1;
+        int north = index - width;
+        int south = index + width;
+        if (coordinates[1] == 0) {
+            north = -1;
+        }
+        if (coordinates[1] == height - 1) {
+            south = -1;
+        }
+        if (coordinates[0] == 0) {
+            west = -1;
+        }
+        if (coordinates[0] == width - 1) {
+            east = -1;
+        }
+        return new int[]{east, west, north, south};
     }
 
     private int[] convertIndexToCoordinates(int index, int width) {  // [x, y] coordinate
