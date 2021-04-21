@@ -4,7 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import EA.Components.Individual;
+import EA.Operations.Crossover;
 import EA.Operations.Initializer;
+import EA.Operations.Mutation;
 import javafx.application.Platform;
 import javafx.application.Application;
 import javafx.scene.image.*;
@@ -39,7 +41,12 @@ public class Test extends Application {
         System.out.println("Height: " + height + " - Width: " + width);
 
         // Individual ind = new Individual(3, 4);
-        List<Individual> population = Initializer.init(10, height, width, pixelReader);
+        List<Individual> population = Initializer.init(2, height, width, pixelReader);
+
+        // population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
+
+        // Individual mutated = Mutation.applySingleBitMutation(population.get(0));
+        // population.add(0, mutated);
 
         System.out.println("\nPopulation: ");
         for (Individual dude: population) {
