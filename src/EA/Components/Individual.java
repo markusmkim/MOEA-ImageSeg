@@ -145,7 +145,6 @@ public class Individual {
         Map<Integer, Color> segmentsRGBCentroids = new HashMap<>();
         for (Map.Entry<Integer, Map<String, Double>> entry : segmentsRGBSums.entrySet()) {
             int segmentKey = entry.getKey();
-            Map<String, Double> centroids = new HashMap<>();
             Map<String, Double> rgbSums = entry.getValue();
             double redCentroid = rgbSums.get("red") / rgbSums.get("count");
             double greenCentroid = rgbSums.get("green") / rgbSums.get("count");
