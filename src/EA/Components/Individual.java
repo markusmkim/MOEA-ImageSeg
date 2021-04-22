@@ -17,8 +17,13 @@ public class Individual {
 
     private final PixelReader pixelReader;  // pixelReader for Image objective to segmentation
 
-    Map<Integer, Map<String, Double>> segmentsRGBSums;
-    Map<Integer, Integer> pixelSegmentKeys;
+    private Map<Integer, Color> segmentsRGBCentroids;
+    private Map<Integer, Integer> pixelSegmentMappings;
+
+    // Objective values (fitness values)
+    double edgeValue;
+    double connectivity;
+    double deviation;
 
 
     public Individual(String genotype, int height, int width, PixelReader pixelReader) {
@@ -30,21 +35,24 @@ public class Individual {
 
 
     // Getters
-    public String getGenotype()         { return genotype; }
-    public int getHeight()              { return height; }
-    public int getWidth()               { return width; }
-    public PixelReader getPixelReader() { return this.pixelReader; }
+    public String getGenotype()                                 { return genotype; }
+    public int getHeight()                                      { return height; }
+    public int getWidth()                                       { return width; }
+    public PixelReader getPixelReader()                         { return this.pixelReader; }
+    public Map<Integer, Integer> getPixelSegmentMappings()      { return pixelSegmentMappings; }
+    public Map<Integer, Color> getSegmentsRGBCentroids()        { return segmentsRGBCentroids; }
+    public double getEdgeValue()                                { return edgeValue; }
+    public double getConnectivity()                             { return connectivity; }
+    public double getDeviation()                                { return deviation; }
 
 
-    public void evaluate() {
-        int c = 0;
-        for (int i = 0; i < 40000; i++) {
-            for (int j = 0; j < 100; j++) {
-                c += j;
-            }
-        }
-        System.out.println(c);
+    // Setters
+    public void setObjectives(double edgeValue, double connectivity, double deviation) {
+        this.edgeValue = edgeValue;
+        this.connectivity = connectivity;
+        this.deviation = deviation;
     }
+
 
 
     public Image constructPhenotype() {
@@ -53,10 +61,10 @@ public class Individual {
 
         for (int i = 0; i < this.genotype.length(); i++) {
             int[] coordinates = Utils.convertIndexToCoordinates(i, this.width);
-            int[] neighbourIndexes = this.getNeighbourIndexes(i, this.height, this.width);
+            int[] neighbourIndexes = Utils.getNeighbourIndexes(i, this.height, this.width, false);
             for (int j = 0; j < neighbourIndexes.length; j++) {
                 // System.out.println(neighbourIndexes[j]);
-                if (neighbourIndexes[j] == -1 || !this.pixelSegmentKeys.get(i).equals(this.pixelSegmentKeys.get(neighbourIndexes[j]))) {
+                if (neighbourIndexes[j] == -1 || !this.pixelSegmentMappings.get(i).equals(this.pixelSegmentMappings.get(neighbourIndexes[j]))) {
                     pixelWriter.setColor(coordinates[0], coordinates[1], Color.PINK);
                     int oppositeIndex;
                     if (j < 2) {
@@ -78,7 +86,7 @@ public class Individual {
 
     public void computeSegments() {
         Map<Integer, Map<String, Double>> segmentsRGBSums = new HashMap<>();
-        Map<Integer, Integer> pixelSegmentKeys = new HashMap<>();
+        Map<Integer, Integer> pixelSegmentMappings = new HashMap<>();
         int pixelSegmentKeyCounter = 0;
         List<Integer> indexesToProcess = new ArrayList<>();
         for (int i = 0; i < this.genotype.length(); i++) {
@@ -88,7 +96,7 @@ public class Individual {
             List<Integer> processedIndexes = new ArrayList<>();
             int index = indexesToProcess.get(0);
 
-            while (this.genotype.charAt(index) != '0' && !pixelSegmentKeys.containsKey(index) && !processedIndexes.contains(index)) {
+            while (this.genotype.charAt(index) != '0' && !pixelSegmentMappings.containsKey(index) && !processedIndexes.contains(index)) {
                 processedIndexes.add(index);
                 char direction = this.genotype.charAt(index);
                 if (direction == 'W') {
@@ -104,25 +112,25 @@ public class Individual {
                     index += width;
                 }
             }
-            if (!pixelSegmentKeys.containsKey(index)){
+            if (!pixelSegmentMappings.containsKey(index)){
                 indexesToProcess.remove(Integer.valueOf(index));
             }
             // processedIndexes.add(index);
             int segmentKey;
             Map<String, Double> rgbSums;
-            if (pixelSegmentKeys.containsKey(index)) {
-                segmentKey = pixelSegmentKeys.get(index);
+            if (pixelSegmentMappings.containsKey(index)) {
+                segmentKey = pixelSegmentMappings.get(index);
                 rgbSums = segmentsRGBSums.get(segmentKey);
             }
             else {
                 segmentKey = pixelSegmentKeyCounter++;
-                pixelSegmentKeys.put(index, segmentKey);
+                pixelSegmentMappings.put(index, segmentKey);
                 Color pixelColor = this.getPixelColor(index);
                 rgbSums = new HashMap<>();
                 this.updateRgbSums(rgbSums, pixelColor);
             }
             for (Integer processedIndex : processedIndexes) {
-                pixelSegmentKeys.put(processedIndex, segmentKey);
+                pixelSegmentMappings.put(processedIndex, segmentKey);
                 indexesToProcess.remove(Integer.valueOf(processedIndex));
                 Color pixelColor = this.getPixelColor(processedIndex);
                 this.updateRgbSums(rgbSums, pixelColor);
@@ -132,8 +140,20 @@ public class Individual {
         System.out.println("Segment key count: " + pixelSegmentKeyCounter);
         // pixelSegmentKeys.forEach((key, value) -> System.out.println(key + " " + value));
         segmentsRGBSums.forEach((key, value) -> System.out.println(key + " " + value));
-        this.pixelSegmentKeys = pixelSegmentKeys;
-        this.segmentsRGBSums = segmentsRGBSums;
+        this.pixelSegmentMappings = pixelSegmentMappings;
+
+        Map<Integer, Color> segmentsRGBCentroids = new HashMap<>();
+        for (Map.Entry<Integer, Map<String, Double>> entry : segmentsRGBSums.entrySet()) {
+            int segmentKey = entry.getKey();
+            Map<String, Double> centroids = new HashMap<>();
+            Map<String, Double> rgbSums = entry.getValue();
+            double redCentroid = rgbSums.get("red") / rgbSums.get("count");
+            double greenCentroid = rgbSums.get("green") / rgbSums.get("count");
+            double blueCentroid = rgbSums.get("blue") / rgbSums.get("count");
+            Color c = Color.color(redCentroid, greenCentroid, blueCentroid);
+            segmentsRGBCentroids.put(segmentKey, c);
+        }
+        this.segmentsRGBCentroids = segmentsRGBCentroids;
     }
 
     private void updateRgbSums(Map<String, Double> map, Color pixelColor) {
@@ -148,26 +168,13 @@ public class Individual {
         return this.pixelReader.getColor(imageCoordinates[0], imageCoordinates[1]);
     }
 
-    private int[] getNeighbourIndexes(int index, int height, int width) {
-        int[] coordinates = Utils.convertIndexToCoordinates(index, width);
-        int east = index + 1;
-        int west = index - 1;
-        int north = index - width;
-        int south = index + width;
-        if (coordinates[1] == 0) {
-            north = -1;
-        }
-        if (coordinates[1] == height - 1) {
-            south = -1;
-        }
-        if (coordinates[0] == 0) {
-            west = -1;
-        }
-        if (coordinates[0] == width - 1) {
-            east = -1;
-        }
-        return new int[]{east, west, north, south};
+
+    public void printObjectiveValues() {
+        System.out.println("Edge value:    " + edgeValue);
+        System.out.println("Connectivity:  " + connectivity);
+        System.out.println("Deviation:     " + deviation);
     }
+
 
     @Override
     public String toString() {

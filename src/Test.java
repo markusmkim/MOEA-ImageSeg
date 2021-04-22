@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import EA.Components.Individual;
+import EA.Objectives;
 import EA.Operations.Crossover;
 import EA.Operations.Initializer;
 import EA.Operations.Mutation;
@@ -43,7 +44,7 @@ public class Test extends Application {
         // Individual ind = new Individual(3, 4);
         List<Individual> population = Initializer.init(2, height, width, pixelReader);
 
-        // population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
+        population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
 
         // Individual mutated = Mutation.applySingleBitMutation(population.get(0));
         // population.add(0, mutated);
@@ -52,7 +53,8 @@ public class Test extends Application {
         for (Individual dude: population) {
             System.out.println(dude);
             dude.computeSegments();
-            dude.evaluate();
+            Objectives.evaluateIndividual(dude);
+            dude.printObjectiveValues();
         }
 
         ImageView iv1 = new ImageView();
