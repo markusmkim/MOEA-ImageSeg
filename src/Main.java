@@ -1,38 +1,34 @@
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import EA.Components.Individual;
+import EA.GA;
+import EA.MOEA;
 import EA.Objectives;
 import EA.Operations.Crossover;
 import EA.Operations.Initializer;
 import EA.Operations.Mutation;
-import javafx.application.Platform;
 import javafx.application.Application;
 import javafx.scene.image.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 
-public class Test extends Application {
 
-    private final String path = "data/86016/Test image.jpg";
+public class Main extends Application {
 
-    private Image image;
+    private final Image image;
 
 
-    public Test() {
-        this.image = new Image(this.path, false);
+    public Main() {
+        this.image = new Image(Config.FILEPATH, false);
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Test t = new Test();
+        Main t = new Main();
         PixelReader pixelReader = t.image.getPixelReader();
         Color color = pixelReader.getColor(1, 1);
         int height = (int) Math.round(t.image.getHeight());
@@ -41,19 +37,27 @@ public class Test extends Application {
 
         System.out.println("Height: " + height + " - Width: " + width);
 
-        // Individual ind = new Individual(3, 4);
-        List<Individual> population = Initializer.init(2, height, width, pixelReader);
+        Crossover crossover = new Crossover(Config.CROSSOVER_RATE);
+        Mutation mutation = new Mutation(Config.MUTATION_RATE);
+        GA geneticAlgorithm = new GA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.FITNESS_WEIGHTS);
+        MOEA moea = new MOEA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation);
 
-        population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
+        // Individual ind = new Individual(3, 4);
+        List<Individual> population = Initializer.init(Config.POPULATION_SIZE, height, width, pixelReader);
+
+        // population = geneticAlgorithm.run(population);
+        population = moea.run(population);
+
+        // population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
 
         // Individual mutated = Mutation.applySingleBitMutation(population.get(0));
         // population.add(0, mutated);
 
-        System.out.println("\nPopulation: ");
+        System.out.println("\nResulting population: ");
         for (Individual dude: population) {
-            System.out.println(dude);
-            dude.computeSegments();
-            Objectives.evaluateIndividual(dude);
+            // System.out.println(dude);
+            // dude.computeSegments();
+            // Objectives.evaluateIndividual(dude);
             dude.printObjectiveValues();
         }
 

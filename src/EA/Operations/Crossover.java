@@ -7,7 +7,19 @@ import javafx.scene.image.PixelReader;
 Recombination operator
  */
 public class Crossover {
-    public static Individual[] applyUniformCrossover(Individual p1, Individual p2) {
+    private double crossoverRate;
+
+
+    public Crossover(double crossoverRate) {
+        this.crossoverRate = crossoverRate;
+    }
+
+
+    public Individual[] applyUniformCrossover(Individual p1, Individual p2) {
+        if (Math.random() > this.crossoverRate) {
+            return new Individual[]{p1, p2};
+        }
+
         StringBuilder child1Genotype = new StringBuilder();
         StringBuilder child2Genotype  = new StringBuilder();
 

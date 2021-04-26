@@ -20,10 +20,18 @@ public class Individual {
     private Map<Integer, Color> segmentsRGBCentroids;
     private Map<Integer, Integer> pixelSegmentMappings;
 
-    // Objective values (fitness values)
-    double edgeValue;
-    double connectivity;
-    double deviation;
+    // Objective values ("fitness values" for MOEA)
+    private double edgeValue;
+    private double connectivity;
+    private double deviation;
+    private boolean isEvaluated = false;
+
+    // Used for non-dominated sorting by MOEA
+    private int rank;
+    private double crowdingDistance;
+
+    // Fitness GA
+    private double fitness; // Fitness value = weighted average of objective values
 
 
     public Individual(String genotype, int height, int width, PixelReader pixelReader) {
@@ -44,6 +52,9 @@ public class Individual {
     public double getEdgeValue()                                { return edgeValue; }
     public double getConnectivity()                             { return connectivity; }
     public double getDeviation()                                { return deviation; }
+    public boolean isEvaluated()                                { return isEvaluated; }
+    public double getCrowdingDistance()                         { return crowdingDistance; }
+    public double getFitness()                                  { return fitness; }
 
 
     // Setters
@@ -51,8 +62,24 @@ public class Individual {
         this.edgeValue = edgeValue;
         this.connectivity = connectivity;
         this.deviation = deviation;
+        this.isEvaluated = true;
     }
 
+    public void setCrowdingDistance(double crowdingDistance) { this.crowdingDistance = crowdingDistance; }
+
+    public void incrementCrowdingDistance(double increment) {
+        if (this.crowdingDistance == 1000000000) {
+            // do nothing
+            return;
+        }
+        this.crowdingDistance += increment;
+    }
+
+
+    public void calculateFitness(double[] weights) {
+        // Fitness should be maximized
+        this.fitness = 4000 + (weights[0] * edgeValue - weights[1] * connectivity - weights[2] * deviation);
+    }
 
 
     public Image constructPhenotype() {
@@ -137,9 +164,9 @@ public class Individual {
             }
             segmentsRGBSums.put(segmentKey, rgbSums);
         }
-        System.out.println("Segment key count: " + pixelSegmentKeyCounter);
+        // System.out.println("Segment key count: " + pixelSegmentKeyCounter);
         // pixelSegmentKeys.forEach((key, value) -> System.out.println(key + " " + value));
-        segmentsRGBSums.forEach((key, value) -> System.out.println(key + " " + value));
+        // segmentsRGBSums.forEach((key, value) -> System.out.println(key + " " + value));
         this.pixelSegmentMappings = pixelSegmentMappings;
 
         Map<Integer, Color> segmentsRGBCentroids = new HashMap<>();
@@ -179,4 +206,5 @@ public class Individual {
     public String toString() {
         return this.genotype;
     }
+
 }

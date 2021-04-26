@@ -10,7 +10,20 @@ import java.util.*;
 Mutation operator
  */
 public class Mutation {
-    public static Individual applySingleBitMutation(Individual individual) {
+    private double mutationRate;
+
+
+    public Mutation(double mutationRate) {
+        this.mutationRate = mutationRate;
+    }
+
+
+    public Individual applySingleBitMutation(Individual individual) {
+        if (Math.random() > this.mutationRate) {
+            return individual;
+        }
+
+
         StringBuilder mutableGenotype = new StringBuilder(individual.getGenotype());
 
         int height = individual.getHeight();
