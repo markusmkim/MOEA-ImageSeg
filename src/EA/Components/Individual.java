@@ -82,9 +82,17 @@ public class Individual {
     }
 
 
-    public Image constructPhenotype() {
-        WritableImage image = new WritableImage(this.pixelReader, this.width, this.height);
-        PixelWriter pixelWriter = image.getPixelWriter();
+    public Image[] constructPhenotype() {
+        WritableImage type1 = new WritableImage(this.pixelReader, this.width, this.height);
+        PixelWriter pixelWriterType1 = type1.getPixelWriter();
+
+        WritableImage type2 = new WritableImage(this.width, this.height);
+        PixelWriter pixelWriterType2 = type2.getPixelWriter();
+
+        for (int i = 0; i < this.genotype.length(); i++) {
+            int[] c = Utils.convertIndexToCoordinates(i, this.width);
+            pixelWriterType2.setColor(c[0], c[1], Color.WHITE);
+        }
 
         for (int i = 0; i < this.genotype.length(); i++) {
             int[] coordinates = Utils.convertIndexToCoordinates(i, this.width);
@@ -92,7 +100,10 @@ public class Individual {
             for (int j = 0; j < neighbourIndexes.length; j++) {
                 // System.out.println(neighbourIndexes[j]);
                 if (neighbourIndexes[j] == -1 || !this.pixelSegmentMappings.get(i).equals(this.pixelSegmentMappings.get(neighbourIndexes[j]))) {
-                    pixelWriter.setColor(coordinates[0], coordinates[1], Color.PINK);
+                    pixelWriterType1.setColor(coordinates[0], coordinates[1], Color.PINK);
+                    pixelWriterType2.setColor(coordinates[0], coordinates[1], Color.BLACK);
+
+                    /*
                     int oppositeIndex;
                     if (j < 2) {
                         oppositeIndex = (j + 1) % 2;
@@ -102,12 +113,14 @@ public class Individual {
                     }
                     int[] c = Utils.convertIndexToCoordinates(neighbourIndexes[oppositeIndex], this.width);
                     if (0 <= c[0] && c[0] < this.width && 0 <= c[1] && c[1] < this.height) {
-                        pixelWriter.setColor(c[0], c[1], Color.PINK);
+                        pixelWriterType1.setColor(c[0], c[1], Color.PINK);
+                        pixelWriterType2.setColor(c[0], c[1], Color.BLACK);
                     }
+                     */
                 }
             }
         }
-        return image;
+        return new Image[]{type1, type2};
     }
 
 

@@ -61,33 +61,40 @@ public class MOEA {
             System.out.println("hei");
             System.out.println("" + fronts.size());
 
-            List<Individual> survivors = new ArrayList<>();
-            int frontIndex = 0;
-            boolean addNextFrontToSurvivors = fronts.get(frontIndex).size() <= this.populationSize;
-            while (addNextFrontToSurvivors) {
-                survivors.addAll(fronts.get(frontIndex));
-                frontIndex++;
+            List<Individual> survivors;
+            if (i == this.generations) {
+                survivors = fronts.get(0);
+            }
+            else {
+                survivors = new ArrayList<>();
+                int frontIndex = 0;
+                boolean addNextFrontToSurvivors = fronts.get(frontIndex).size() <= this.populationSize;
+                while (addNextFrontToSurvivors) {
+                    survivors.addAll(fronts.get(frontIndex));
+                    frontIndex++;
 
-                if (frontIndex < fronts.size()) {
-                    if (fronts.get(frontIndex).size() + survivors.size() > this.populationSize) {
+                    if (frontIndex < fronts.size()) {
+                        if (fronts.get(frontIndex).size() + survivors.size() > this.populationSize) {
+                            addNextFrontToSurvivors = false;
+                        }
+                    }
+                    else {
                         addNextFrontToSurvivors = false;
                     }
                 }
-                else {
-                    addNextFrontToSurvivors = false;
-                }
-            }
-            // System.out.println("dddd - " + survivors.size());
+                // System.out.println("dddd - " + survivors.size());
 
-            if (survivors.size() < this.populationSize) {
-                // System.out.println("fffug");
-                List<Individual> frontToDifferentiate = fronts.get(frontIndex);
-                this.calculateCrowdingDistances(frontToDifferentiate, minMaxValues);
-                frontToDifferentiate.sort(new CrowdingDistanceComparator());
-                while (survivors.size() < this.populationSize) {
-                    survivors.add(frontToDifferentiate.remove(0));
+                if (survivors.size() < this.populationSize) {
+                    // System.out.println("fffug");
+                    List<Individual> frontToDifferentiate = fronts.get(frontIndex);
+                    this.calculateCrowdingDistances(frontToDifferentiate, minMaxValues);
+                    frontToDifferentiate.sort(new CrowdingDistanceComparator());
+                    while (survivors.size() < this.populationSize) {
+                        survivors.add(frontToDifferentiate.remove(0));
+                    }
                 }
             }
+
 
             // System.out.println("dudu - " + survivors.size());
 

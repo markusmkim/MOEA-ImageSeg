@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,12 +11,16 @@ import EA.Operations.Crossover;
 import EA.Operations.Initializer;
 import EA.Operations.Mutation;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.*;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
+
+import javax.imageio.ImageIO;
 
 
 public class Main extends Application {
@@ -53,34 +59,90 @@ public class Main extends Application {
         // Individual mutated = Mutation.applySingleBitMutation(population.get(0));
         // population.add(0, mutated);
 
+        this.saveSolutions(population);
+
+        this.showSolutions(stage, population);
+
+    }
+
+
+    private void showSolutions(Stage stage, List<Individual> results) {
+        System.out.println("\nResulting population size: " + results.size());
         System.out.println("\nResulting population: ");
-        for (Individual dude: population) {
-            // System.out.println(dude);
-            // dude.computeSegments();
-            // Objectives.evaluateIndividual(dude);
+        for (Individual dude: results) {
             dude.printObjectiveValues();
         }
-
-        ImageView iv1 = new ImageView();
-        iv1.setImage(t.image);
-        ImageView iv2 = new ImageView();
-        iv2.setImage(population.get(0).constructPhenotype());
 
         Group root = new Group();
         Scene scene = new Scene(root);
         scene.setFill(Color.BLACK);
-        HBox box = new HBox();
-        box.getChildren().add(iv1);
-        box.getChildren().add(iv2);
-        root.getChildren().add(box);
+        HBox hbox = new HBox();
+        root.getChildren().add(hbox);
+
+        for (int i = 0; i < 5; i++) {
+            if (results.size() < i - 1) {
+                break;
+            }
+
+            ImageView type1 = new ImageView();
+            ImageView type2 = new ImageView();
+            Image[] res = results.get(i).constructPhenotype();
+            type1.setImage(res[0]);
+            type2.setImage(res[1]);
+
+            VBox vbox = new VBox();
+            vbox.getChildren().addAll(type1, type2);
+            hbox.getChildren().add(vbox);
+        }
 
         stage.setTitle("ImageView");
-        stage.setWidth(415);
-        stage.setHeight(200);
+        // stage.setWidth(415);
+        // stage.setHeight(200);
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
         //https://docs.oracle.com/javase/8/javafx/api/javafx/scene/image/ImageView.html
+
+    }
+
+
+    private void saveSolutions(List<Individual> results) {
+        /*
+        try {
+            myObj = new File("filename.png");
+            if (myObj.createNewFile()) {
+                System.out.println("File created: " + myObj.getName());
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+         */
+        this.clearDirectory(Config.studentBlackWhitePath);
+        this.clearDirectory(Config.studentColorPath);
+
+        for (int i = 0; i < results.size(); i++) {
+            Image[] res = results.get(i).constructPhenotype();
+            try {
+                ImageIO.write(SwingFXUtils.fromFXImage(res[0], null), "png", new File(Config.studentColorPath + "c" + i + ".png"));
+                ImageIO.write(SwingFXUtils.fromFXImage(res[1], null), "png", new File(Config.studentBlackWhitePath + "bw" + i + ".png"));
+            } catch (IOException e) {
+                System.out.println("Save error");
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private void clearDirectory(String dirPath) {
+        File[] files = new File(dirPath).listFiles();
+        if (files != null) {
+            for (File file : files) {
+                file.delete();
+            }
+        }
     }
 
 

@@ -17,8 +17,8 @@ import javafx.scene.image.PixelReader;
  * You will need to implement the FeedbackStation interface yourselves.
  */
 public final class Evaluator implements Runnable{
-    String optFolder = "EVALUATOR/optimal/blackWhite/";
-    String studFolder = "EVALUATOR/student/blackWhite/";
+    String optFolder = "results/optimal/blackWhite/";
+    String studFolder = "results/student/blackWhite/";
 
     final double colorValueSlackRange = 40.0/255.0;
     final double blackValueThreshold = 100.0/255.0;
