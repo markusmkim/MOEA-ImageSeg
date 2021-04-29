@@ -39,7 +39,8 @@ public class MOEA {
             System.out.println("" + front.size());
         }
 
-        this.printGenerationStats(0, population);
+        List<Integer> nFrontsHistory = new ArrayList<>();
+        this.printGenerationStats(0, population, nFrontsHistory);
 
         for (int i = 1; i <= this.generations; i++) {
             List<Individual> parents = new ArrayList<>(this.populationSize);
@@ -58,8 +59,9 @@ public class MOEA {
 
             population.sort(nonDominatedObjectivesComparator);
             fronts = frontsByRank(population, nonDominatedObjectivesComparator);
-            System.out.println("hei");
-            System.out.println("" + fronts.size());
+            // System.out.println("hei");
+            //System.out.println("" + fronts.size());
+            nFrontsHistory.add(fronts.size());
 
             List<Individual> survivors;
             if (i == this.generations) {
@@ -100,8 +102,9 @@ public class MOEA {
 
             population = survivors;
 
-            if (i % 10 == 0) {
-                this.printGenerationStats(i, population);
+            if (i % 5 == 0) {
+                this.printGenerationStats(i, population, nFrontsHistory);
+                nFrontsHistory.clear();
             }
         }
 
@@ -213,7 +216,7 @@ public class MOEA {
         Comparator<Individual>[] comparators = new Comparator[]{edgeValueComparator, connectivityComparator, deviationComparator};
         String[] objectiveKeys = new String[]{"edgeValue", "connectivity", "deviation"};
 
-        System.out.println("calculateCrowding");
+        // System.out.println("calculateCrowding");
 
         for (int i = 0; i < comparators.length; i++) {
             frontMembers.sort(comparators[i]);
@@ -242,31 +245,55 @@ public class MOEA {
                 frontMembers.get(index).incrementCrowdingDistance(increment);
             }
         }
+
+        // System.out.println("--------------------------------------------------------------------------------");
     }
 
 
-    private double getAverageFitness(List<Individual> population) {
-        double sum = 0;
-        for (Individual individual : population) {
-            sum += individual.getFitness();
-        }
-        return sum / population.size();
-    }
-
-
-    private void printGenerationStats(int generation, List<Individual> population) {
+    private void printGenerationStats(int generation, List<Individual> population, List<Integer> nFrontsHistory) {
         String space = generation < 100 ? generation < 10 ? "       " : "      " : "     ";
         String gen = generation > 0 ? "Generation " + generation + space : "Initial generation ";
 
-        // Assume population is sorted
-        double bestFitness = population.get(0).getFitness();
-        double worstFitness = population.get(population.size() - 1).getFitness();
-        double averageFitness = this.getAverageFitness(population);
+        double bestEdgeValue = 0.0;
+        double bestConnectivity = 1000000000.0;
+        double bestDeviation = 1000000000.0;
+
+        double sumEdgeValue = 0.0;
+        double sumConnectivity = 0.0;
+        double sumDeviation = 0.0;
+
+        for (Individual individual : population) {
+            double edgeValue = individual.getEdgeValue();
+            double connectivity = individual.getConnectivity();
+            double deviation = individual.getDeviation();
+            sumEdgeValue += edgeValue;
+            sumConnectivity += connectivity;
+            sumDeviation += deviation;
+
+            if (edgeValue > bestEdgeValue) {
+                bestEdgeValue = edgeValue;
+            }
+            if (connectivity < bestConnectivity) {
+                bestConnectivity = connectivity;
+            }
+            if (deviation < bestDeviation) {
+                bestDeviation = deviation;
+            }
+        }
+
+        double avgEdgeValue = sumEdgeValue / population.size();
+        double avgConnectivity = sumConnectivity / population.size();
+        double avgDeviation = sumDeviation / population.size();
 
         System.out.println(gen +
-                " | Population size: " + population.size() +
-                " | Average fitness: " + averageFitness +
-                " | Best fitness: " + bestFitness +
-                " | Worst fitness: " + worstFitness);
+                "  | Population size: " + Utils.formatValue(population.size()) +
+                "  ||  Best ev: " + Utils.formatValue(bestEdgeValue) +
+                "  |  Avg ev: " + Utils.formatValue(avgEdgeValue) +
+                "  ||  Best cm: " + Utils.formatValue(bestConnectivity) +
+                "  |  Avg cm: " + Utils.formatValue(avgConnectivity) +
+                "  ||  Best dev: " + Utils.formatValue(bestDeviation) +
+                "  |  Avg dev: " + Utils.formatValue(avgDeviation) +
+                "  |||  Fronts history: " + nFrontsHistory
+        );
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import EA.Components.Individual;
 import EA.GA;
@@ -12,6 +13,7 @@ import EA.Objectives;
 import EA.Operations.Crossover;
 import EA.Operations.Initializer;
 import EA.Operations.Mutation;
+import EA.Utils;
 import evaluator.Evaluator;
 import evaluator.Score;
 import javafx.application.Application;
@@ -59,10 +61,7 @@ public class Main extends Application {
         population = moea.run(population);
 
         System.out.println("\nPareto front size: " + population.size());
-        // population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
-
-        // Individual mutated = Mutation.applySingleBitMutation(population.get(0));
-        // population.add(0, mutated);
+        this.printAllSegmentations(population);
 
         this.saveSolutions(population);
 
@@ -77,7 +76,7 @@ public class Main extends Application {
                 best = scores[i];
             }
         }
-        System.out.println("Best score: " + best);
+        System.out.println("\nBest score: " + best);
 
         List<Integer> topFiveIndexes = Score.findTopFiveIndexes(scoreObjs);
 
@@ -123,6 +122,12 @@ public class Main extends Application {
     }
 
 
+    private void printAllSegmentations(List<Individual> population) {
+        List<Integer> segmentations = population.stream().map(i -> i.getSegmentsRGBCentroids().size()).collect(Collectors.toList());
+        System.out.println("Segmentations: " + segmentations);
+    }
+
+
     private void printScoreStats(List<Integer> indexes, double[] scores) {
         List<Double> scoresList = new ArrayList<>();
         for (int index : indexes) {
@@ -136,19 +141,12 @@ public class Main extends Application {
     private void printResults(List<Individual> results) {
         System.out.println("\nTop five: ");
         for (Individual individual : results) {
-            String output = "Edge value: " + this.formatValue(individual.getEdgeValue()) +
-                    "     |     Connectivity measure: " + this.formatValue(individual.getConnectivity()) +
-                    "     |     Overall deviation: " + this.formatValue(individual.getDeviation()) +
-                    "     |     Number of segments: " + this.formatValue(individual.getSegmentsRGBCentroids().size());
+            String output = "Edge value: " + Utils.formatValue(individual.getEdgeValue()) +
+                    "     |     Connectivity measure: " + Utils.formatValue(individual.getConnectivity()) +
+                    "     |     Overall deviation: " + Utils.formatValue(individual.getDeviation()) +
+                    "     |     Number of segments: " + Utils.formatValue(individual.getSegmentsRGBCentroids().size());
             System.out.println(output);
         }
-    }
-
-
-    private String formatValue(double value) {
-        String outputValue = String.format(Locale.ROOT, "%.2f", value);
-        String space = "        ".substring(0, 8 - outputValue.length());
-        return space + outputValue;
     }
 
 

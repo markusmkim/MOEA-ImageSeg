@@ -1,6 +1,8 @@
 package EA;
 
 
+import java.util.Locale;
+
 public class Utils {
 
     public static int[] convertIndexToCoordinates(int index, int width) {  // [x, y] coordinate
@@ -27,6 +29,12 @@ public class Utils {
         }
 
         return new int[]{east, west, north, south};
+    }
+
+    public static String formatValue(double value) {
+        String outputValue = String.format(Locale.ROOT, "%.2f", value);
+        String space = "       ".substring(0, 8 - outputValue.length());
+        return space + outputValue;
     }
 
 }

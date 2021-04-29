@@ -5,9 +5,9 @@ public class Config {
     static final String FILEPATH = "data/86016/Test image.jpg";
 
     static final int POPULATION_SIZE = 40;
-    static final int GENERATIONS = 4; // 40
+    static final int GENERATIONS = 30; // 40
     static final double CROSSOVER_RATE = 0.5;
-    static final double MUTATION_RATE = 0.6;
+    static final double MUTATION_RATE = 0.1; // 0.6
 
 
     // GA
