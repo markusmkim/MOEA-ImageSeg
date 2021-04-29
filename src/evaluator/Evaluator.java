@@ -17,8 +17,8 @@ import javafx.scene.image.PixelReader;
  * You will need to implement the FeedbackStation interface yourselves.
  */
 public final class Evaluator implements Runnable{
-    String optFolder = "results/optimal/blackWhite/";
-    String studFolder = "results/student/blackWhite/";
+    String optFolder; // = "results/optimal/blackWhite/";
+    String studFolder; // = "results/student/blackWhite/";
 
     final double colorValueSlackRange = 40.0/255.0;
     final double blackValueThreshold = 100.0/255.0;
@@ -32,8 +32,10 @@ public final class Evaluator implements Runnable{
 
     //private final FeedbackStation feedbackStation;
 
-    public Evaluator(/*FeedbackStation feedbackStation*/){
+    public Evaluator(/*FeedbackStation feedbackStation*/String optFolder, String studFolder){
         //this.feedbackStation = feedbackStation;
+        this.optFolder = optFolder;
+        this.studFolder = studFolder;
         optFiles = new ArrayList<>();
         studFiles = new ArrayList<>();
         optImages = new ArrayList<>();
@@ -124,26 +126,30 @@ public final class Evaluator implements Runnable{
         return counter / Math.max(numBlackPixels, 1.0);
     }
 
-    private List<File> getFilesInDir(String directory){
+    private List<File> getFilesInDir(String directory, boolean sort){
         File dir = new File(directory);
         List<File> files = new ArrayList<>();
         files.addAll(Arrays.asList(dir.listFiles()));
-        File[] ordered = new File[files.size()];
-        for(File f : files){
-            String lastPart = f.getName().split("_")[2];
-            int num = Integer.parseInt(lastPart.substring(0, lastPart.length()-4));
-            ordered[num] = f;
+
+        if (sort) {
+            File[] ordered = new File[files.size()];
+            for(File f : files){
+                String lastPart = f.getName().split("_")[1];
+                int num = Integer.parseInt(lastPart.substring(0, lastPart.length()-4));
+                ordered[num] = f;
+            }
+            files = Arrays.asList(ordered);
         }
-        files = Arrays.asList(ordered);
+
         return files;
     }
 
     public void updateOptimalFiles(){
-        optFiles = getFilesInDir(optFolder);
+        optFiles = getFilesInDir(optFolder, false);
     }
 
     public void updateStudentFiles(){
-        studFiles = getFilesInDir(studFolder);
+        studFiles = getFilesInDir(studFolder, true);
     }
 
     private void updateImageLists(){

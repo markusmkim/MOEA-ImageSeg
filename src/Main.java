@@ -1,7 +1,9 @@
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import EA.Components.Individual;
 import EA.GA;
@@ -10,6 +12,8 @@ import EA.Objectives;
 import EA.Operations.Crossover;
 import EA.Operations.Initializer;
 import EA.Operations.Mutation;
+import evaluator.Evaluator;
+import evaluator.Score;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.*;
@@ -54,6 +58,7 @@ public class Main extends Application {
         // population = geneticAlgorithm.run(population);
         population = moea.run(population);
 
+        System.out.println("\nPareto front size: " + population.size());
         // population = Arrays.asList(Crossover.applyUniformCrossover(population.get(0), population.get(1)));
 
         // Individual mutated = Mutation.applySingleBitMutation(population.get(0));
@@ -61,17 +66,33 @@ public class Main extends Application {
 
         this.saveSolutions(population);
 
-        this.showSolutions(stage, population);
+        Evaluator evaluator = new Evaluator(Config.optimalBlackWhitePath, Config.studentBlackWhitePath);
 
+        double[] scores = evaluator.runSameThread();
+        List<Score> scoreObjs = new ArrayList<>();
+        double best = 0.0;
+        for (int i = 0; i < scores.length; i++) {
+            scoreObjs.add(new Score(scores[i], i));
+            if (scores[i] > best) {
+                best = scores[i];
+            }
+        }
+        System.out.println("Best score: " + best);
+
+        List<Integer> topFiveIndexes = Score.findTopFiveIndexes(scoreObjs);
+
+        this.printScoreStats(topFiveIndexes, scores);
+
+        List<Individual> bestResults = new ArrayList<>();
+        for (int index : topFiveIndexes) {
+            bestResults.add(population.get(index));
+        }
+        this.showSolutions(stage, bestResults);
     }
 
 
     private void showSolutions(Stage stage, List<Individual> results) {
-        System.out.println("\nResulting population size: " + results.size());
-        System.out.println("\nResulting population: ");
-        for (Individual dude: results) {
-            dude.printObjectiveValues();
-        }
+        this.printResults(results);
 
         Group root = new Group();
         Scene scene = new Scene(root);
@@ -79,14 +100,10 @@ public class Main extends Application {
         HBox hbox = new HBox();
         root.getChildren().add(hbox);
 
-        for (int i = 0; i < 5; i++) {
-            if (results.size() < i - 1) {
-                break;
-            }
-
+        for (Individual result : results) {
             ImageView type1 = new ImageView();
             ImageView type2 = new ImageView();
-            Image[] res = results.get(i).constructPhenotype();
+            Image[] res = result.constructPhenotype();
             type1.setImage(res[0]);
             type2.setImage(res[1]);
 
@@ -106,28 +123,44 @@ public class Main extends Application {
     }
 
 
-    private void saveSolutions(List<Individual> results) {
-        /*
-        try {
-            myObj = new File("filename.png");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+    private void printScoreStats(List<Integer> indexes, double[] scores) {
+        List<Double> scoresList = new ArrayList<>();
+        for (int index : indexes) {
+            scoresList.add(scores[index]);
         }
-         */
+        System.out.println("Best indexes: " + indexes);
+        System.out.println("Best scores : " + scoresList);
+    }
+
+
+    private void printResults(List<Individual> results) {
+        System.out.println("\nTop five: ");
+        for (Individual individual : results) {
+            String output = "Edge value: " + this.formatValue(individual.getEdgeValue()) +
+                    "     |     Connectivity measure: " + this.formatValue(individual.getConnectivity()) +
+                    "     |     Overall deviation: " + this.formatValue(individual.getDeviation()) +
+                    "     |     Number of segments: " + this.formatValue(individual.getSegmentsRGBCentroids().size());
+            System.out.println(output);
+        }
+    }
+
+
+    private String formatValue(double value) {
+        String outputValue = String.format(Locale.ROOT, "%.2f", value);
+        String space = "        ".substring(0, 8 - outputValue.length());
+        return space + outputValue;
+    }
+
+
+    private void saveSolutions(List<Individual> results) {
         this.clearDirectory(Config.studentBlackWhitePath);
         this.clearDirectory(Config.studentColorPath);
 
         for (int i = 0; i < results.size(); i++) {
             Image[] res = results.get(i).constructPhenotype();
             try {
-                ImageIO.write(SwingFXUtils.fromFXImage(res[0], null), "png", new File(Config.studentColorPath + "c" + i + ".png"));
-                ImageIO.write(SwingFXUtils.fromFXImage(res[1], null), "png", new File(Config.studentBlackWhitePath + "bw" + i + ".png"));
+                ImageIO.write(SwingFXUtils.fromFXImage(res[0], null), "png", new File(Config.studentColorPath + "c_" + i + ".png"));
+                ImageIO.write(SwingFXUtils.fromFXImage(res[1], null), "png", new File(Config.studentBlackWhitePath + "bw_" + i + ".png"));
             } catch (IOException e) {
                 System.out.println("Save error");
                 e.printStackTrace();
@@ -150,3 +183,28 @@ public class Main extends Application {
         Application.launch(args);
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* Old from saveSolutions
+try {
+    myObj = new File("filename.png");
+    if (myObj.createNewFile()) {
+        System.out.println("File created: " + myObj.getName());
+    } else {
+        System.out.println("File already exists.");
+    }
+} catch (IOException e) {
+    System.out.println("An error occurred.");
+    e.printStackTrace();
+}
+ */
