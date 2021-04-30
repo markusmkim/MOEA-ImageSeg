@@ -10,12 +10,13 @@ import java.util.*;
 Mutation operator
  */
 public class Mutation {
-    private double mutationRate;
+    private final double mutationRate;
 
 
     public Mutation(double mutationRate) {
         this.mutationRate = mutationRate;
     }
+
 
 
     public Individual applySingleBitMutation(Individual individual) {

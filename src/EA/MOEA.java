@@ -7,6 +7,7 @@ import EA.Operations.Mutation;
 import EA.Operations.Selection;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class MOEA {
@@ -15,18 +16,22 @@ public class MOEA {
     private final int generations;
     private final Crossover crossover;
     private final Mutation mutation;
+    private final int minSeg;
+    private final int maxSeg;
 
 
-    public MOEA(int populationSize, int generations, Crossover crossover, Mutation mutation) {
+    public MOEA(int populationSize, int generations, Crossover crossover, Mutation mutation, int minSeg, int maxSeg) {
         this.populationSize = populationSize;
         this.generations = generations;
         this.crossover = crossover;
         this.mutation = mutation;
+        this.minSeg = minSeg;
+        this.maxSeg = maxSeg;
     }
 
 
     public List<Individual> run(List<Individual> population) {
-        NonDominatedObjectivesComparator nonDominatedObjectivesComparator = new NonDominatedObjectivesComparator();
+        NonDominatedObjectivesComparator nonDominatedObjectivesComparator = new NonDominatedObjectivesComparator(this.minSeg, this.maxSeg);
         this.evaluatePopulation(population);
 
         population.sort(nonDominatedObjectivesComparator);
@@ -42,12 +47,14 @@ public class MOEA {
         List<Integer> nFrontsHistory = new ArrayList<>();
         this.printGenerationStats(0, population, nFrontsHistory);
 
+        List<Individual> oldPopulation = new ArrayList<>(population);
+
         for (int i = 1; i <= this.generations; i++) {
             List<Individual> parents = new ArrayList<>(this.populationSize);
             while (parents.size() < this.populationSize) {
-                Individual[] parentPair = Selection.selectRandomPair(population);
+                Individual[] parentPair = Selection.tournamentSelection(population);
 
-                Individual[] offspring = this.crossover.applyUniformCrossover(parentPair[0], parentPair[1]);
+                Individual[] offspring = this.crossover.apply(parentPair[0], parentPair[1]);
 
                 Individual mutatedOffspring1 = this.mutation.applySingleBitMutation(offspring[0]);
                 Individual mutatedOffspring2 = this.mutation.applySingleBitMutation(offspring[1]);
@@ -56,8 +63,13 @@ public class MOEA {
             }
             population.addAll(parents);
             Map<String, double[]> minMaxValues = this.evaluatePopulation(population);
+            try {
+                population.sort(nonDominatedObjectivesComparator);
+            } catch (Exception e) {
+                System.out.println("Sorting feil");
+                population = oldPopulation;
+            }
 
-            population.sort(nonDominatedObjectivesComparator);
             fronts = frontsByRank(population, nonDominatedObjectivesComparator);
             // System.out.println("hei");
             //System.out.println("" + fronts.size());
@@ -84,10 +96,8 @@ public class MOEA {
                         addNextFrontToSurvivors = false;
                     }
                 }
-                // System.out.println("dddd - " + survivors.size());
 
                 if (survivors.size() < this.populationSize) {
-                    // System.out.println("fffug");
                     List<Individual> frontToDifferentiate = fronts.get(frontIndex);
                     this.calculateCrowdingDistances(frontToDifferentiate, minMaxValues);
                     frontToDifferentiate.sort(new CrowdingDistanceComparator());
@@ -102,8 +112,11 @@ public class MOEA {
 
             population = survivors;
 
+            oldPopulation = new ArrayList<>(population);
+
             if (i % 5 == 0) {
                 this.printGenerationStats(i, population, nFrontsHistory);
+                this.printAllSegmentations(population);
                 nFrontsHistory.clear();
             }
         }
@@ -171,14 +184,19 @@ public class MOEA {
         List<Individual> population = new ArrayList<>(sortedPopulation);
         List<List<Individual>> fronts = new ArrayList<>();
 
+        int rankCounter = 1;
+
         List<Individual> front = new ArrayList<>();
 
         while (population.size() > 0) {
             if (isDominated(population.get(0), front, comparator)) {
                 fronts.add(front);
                 front = new ArrayList<>();
+                rankCounter += 1;
             }
-            front.add(population.remove(0));
+            Individual next = population.remove(0);
+            next.setRank(rankCounter);
+            front.add(next);
         }
         if (front.size() > 0) {
             fronts.add(front);
@@ -248,6 +266,12 @@ public class MOEA {
 
         // System.out.println("--------------------------------------------------------------------------------");
     }
+
+    private void printAllSegmentations(List<Individual> population) {
+        List<Integer> segmentations = population.stream().map(i -> i.getSegmentsRGBCentroids().size()).collect(Collectors.toList());
+        System.out.println("Segmentations: " + segmentations);
+    }
+
 
 
     private void printGenerationStats(int generation, List<Individual> population, List<Integer> nFrontsHistory) {

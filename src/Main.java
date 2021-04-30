@@ -52,12 +52,12 @@ public class Main extends Application {
         Crossover crossover = new Crossover(Config.CROSSOVER_RATE);
         Mutation mutation = new Mutation(Config.MUTATION_RATE);
         GA geneticAlgorithm = new GA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.FITNESS_WEIGHTS);
-        MOEA moea = new MOEA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation);
+        MOEA moea = new MOEA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.MIN_SEG, Config.MAX_SEG);
 
         // Individual ind = new Individual(3, 4);
         List<Individual> population = Initializer.init(Config.POPULATION_SIZE, height, width, pixelReader);
 
-        // population = geneticAlgorithm.run(population);
+        //population = geneticAlgorithm.run(population);
         population = moea.run(population);
 
         System.out.println("\nPareto front size: " + population.size());

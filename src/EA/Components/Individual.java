@@ -54,6 +54,7 @@ public class Individual {
     public double getDeviation()                                { return deviation; }
     public boolean isEvaluated()                                { return isEvaluated; }
     public double getCrowdingDistance()                         { return crowdingDistance; }
+    public int getRank()                                        { return rank; }
     public double getFitness()                                  { return fitness; }
 
 
@@ -66,6 +67,7 @@ public class Individual {
     }
 
     public void setCrowdingDistance(double crowdingDistance) { this.crowdingDistance = crowdingDistance; }
+    public void setRank(int rank)                            { this.rank = rank; }
 
     public void incrementCrowdingDistance(double increment) {
         if (this.crowdingDistance == 1000000000) {
@@ -100,7 +102,7 @@ public class Individual {
             for (int j = 0; j < neighbourIndexes.length; j++) {
                 // System.out.println(neighbourIndexes[j]);
                 if (neighbourIndexes[j] == -1 || !this.pixelSegmentMappings.get(i).equals(this.pixelSegmentMappings.get(neighbourIndexes[j]))) {
-                    pixelWriterType1.setColor(coordinates[0], coordinates[1], Color.PINK);
+                    pixelWriterType1.setColor(coordinates[0], coordinates[1], Color.LIME);
                     pixelWriterType2.setColor(coordinates[0], coordinates[1], Color.BLACK);
 
                     /*

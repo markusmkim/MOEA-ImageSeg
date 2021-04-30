@@ -2,12 +2,15 @@
 
 public class Config {
 
-    static final String FILEPATH = "data/86016/Test image.jpg";
+    static final String FILEPATH = "data/118035/Test image.jpg";
 
     static final int POPULATION_SIZE = 40;
-    static final int GENERATIONS = 30; // 40
-    static final double CROSSOVER_RATE = 0.5;
-    static final double MUTATION_RATE = 0.1; // 0.6
+    static final int GENERATIONS = 50; // 40
+    static final double CROSSOVER_RATE = 0.8; //  0.6; // 0.3
+    static final double MUTATION_RATE = 0.4; // 0.8 // 0.7
+
+    static final int MIN_SEG = 12;
+    static final int MAX_SEG = 47;
 
 
     // GA
