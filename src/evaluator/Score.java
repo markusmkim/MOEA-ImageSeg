@@ -26,7 +26,7 @@ public class Score implements Comparable<Score> {
 
     @Override
     public int compareTo(Score o) {
-        return Double.compare(o.value, this.value);
+        return Double.compare(this.value, o.value);
     }
 
 
@@ -45,5 +45,10 @@ public class Score implements Comparable<Score> {
         }
 
         return new ArrayList<>(topFive).stream().sorted().map(Score::getIndex).collect(Collectors.toList());
+    }
+
+    @Override
+    public String toString() {
+        return "" + this.value;
     }
 }
