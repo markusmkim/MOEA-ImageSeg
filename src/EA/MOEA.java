@@ -11,6 +11,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
+/*
+NSGA-II
+ */
 public class MOEA {
 
     private final int populationSize;
@@ -259,10 +262,6 @@ public class MOEA {
         String space = generation < 100 ? generation < 10 ? "       " : "      " : "     ";
         String gen = generation > 0 ? "Generation " + generation + space : "Initial generation ";
 
-        double bestEdgeValue = 0.0;
-        double bestConnectivity = 1000000000.0;
-        double bestDeviation = 1000000000.0;
-
         double sumEdgeValue = 0.0;
         double sumConnectivity = 0.0;
         double sumDeviation = 0.0;
@@ -274,16 +273,6 @@ public class MOEA {
             sumEdgeValue += edgeValue;
             sumConnectivity += connectivity;
             sumDeviation += deviation;
-
-            if (edgeValue > bestEdgeValue) {
-                bestEdgeValue = edgeValue;
-            }
-            if (connectivity < bestConnectivity) {
-                bestConnectivity = connectivity;
-            }
-            if (deviation < bestDeviation) {
-                bestDeviation = deviation;
-            }
         }
 
         double avgEdgeValue = sumEdgeValue / population.size();
@@ -292,11 +281,8 @@ public class MOEA {
 
         System.out.println(gen +
                 "  | Population size: " + Utils.formatValue(population.size()) +
-                "  ||  Best ev: " + Utils.formatValue(bestEdgeValue) +
                 "  |  Avg ev: " + Utils.formatValue(avgEdgeValue) +
-                "  ||  Best cm: " + Utils.formatValue(bestConnectivity) +
                 "  |  Avg cm: " + Utils.formatValue(avgConnectivity) +
-                "  ||  Best dev: " + Utils.formatValue(bestDeviation) +
                 "  |  Avg dev: " + Utils.formatValue(avgDeviation) +
                 "  |||  Fronts history: " + nFrontsHistory
         );

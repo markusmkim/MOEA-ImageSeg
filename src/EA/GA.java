@@ -16,19 +16,23 @@ public class GA {
     private final Crossover crossover;
     private final Mutation mutation;
     private final double[] fitnessWeights; // [edgeValue, connectivity, deviation]
+    private final int minSeg;
+    private final int maxSeg;
 
 
-    public GA(int populationSize, int generations, Crossover crossover, Mutation mutation, double[] fitnessWeights) {
+    public GA(int populationSize, int generations, Crossover crossover, Mutation mutation, double[] fitnessWeights, int minSeg, int maxSeg) {
         this.populationSize = populationSize;
         this.generations = generations;
         this.crossover = crossover;
         this.mutation = mutation;
         this.fitnessWeights = fitnessWeights;
+        this.minSeg = minSeg;
+        this.maxSeg = maxSeg;
     }
 
 
     public List<Individual> run(List<Individual> population) {
-        Comparator<Individual> fitnessComparator = new FitnessComparator();
+        Comparator<Individual> fitnessComparator = new FitnessComparator(this.minSeg, this.maxSeg);
         this.evaluatePopulation(population);
         population.sort(fitnessComparator);
         this.printGenerationStats(0, population);

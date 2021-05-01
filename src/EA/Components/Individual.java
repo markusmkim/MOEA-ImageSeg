@@ -217,6 +217,15 @@ public class Individual {
     }
 
 
+    public boolean isFeasible(int minSeg, int maxSeg) {
+        int segmentations = this.segmentsRGBCentroids.size();
+        if (segmentations < minSeg) {
+            return false;
+        }
+        return segmentations <= maxSeg;
+    }
+
+
     @Override
     public String toString() {
         return this.genotype;

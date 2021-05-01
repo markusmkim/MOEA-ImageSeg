@@ -49,13 +49,20 @@ public class Main extends Application {
 
         Crossover crossover = new Crossover(Config.CROSSOVER_RATE);
         Mutation mutation = new Mutation(Config.MUTATION_RATE);
-        GA geneticAlgorithm = new GA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.FITNESS_WEIGHTS);
-        MOEA moea = new MOEA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.MIN_SEG, Config.MAX_SEG);
 
         List<Individual> population = Initializer.init(Config.POPULATION_SIZE, height, width, pixelReader);
 
-        //population = geneticAlgorithm.run(population);
-        population = moea.run(population);
+        if (Config.RUN_MOEA) {
+            System.out.println("Running NSGA-II");
+            MOEA moea = new MOEA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.MIN_SEG, Config.MAX_SEG);
+            population = moea.run(population);
+        }
+        else {
+            System.out.println("Running simple GA");
+            GA geneticAlgorithm = new GA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.FITNESS_WEIGHTS, Config.MIN_SEG, Config.MAX_SEG);
+            population = geneticAlgorithm.run(population);
+        }
+
 
         System.out.println("\nPareto front size: " + population.size());
         this.printAllSegmentations(population);
@@ -73,6 +80,7 @@ public class Main extends Application {
                 best = scores[i];
             }
         }
+        System.out.println("\nScores: " + Arrays.toString(scores));
         System.out.println("\nBest score: " + best);
 
         List<Integer> topFiveIndexes = Score.findTopFiveIndexes(scoreObjs);

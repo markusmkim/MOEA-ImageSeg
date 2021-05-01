@@ -4,8 +4,10 @@ public class Config {
 
     static final String FILEPATH = "data/353013/Test image.jpg";
 
+    static final boolean RUN_MOEA = true;
+
     static final int POPULATION_SIZE = 40;
-    static final int GENERATIONS = 60; // 40
+    static final int GENERATIONS = 60; // 60
     static final double CROSSOVER_RATE = 0.9; //  0.6; // 0.3
     static final double MUTATION_RATE = 0.8; // 0.8 // 0.7
 
@@ -14,7 +16,7 @@ public class Config {
 
 
     // GA
-    static final double[] FITNESS_WEIGHTS = new double[]{0.24, 0.52, 0.24};  // [edgeValue, connectivity, deviation]
+    static final double[] FITNESS_WEIGHTS = new double[]{0.3, 0.4, 0.3};  // [edgeValue, connectivity, deviation]
 
 
 
