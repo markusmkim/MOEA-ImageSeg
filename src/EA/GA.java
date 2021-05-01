@@ -38,7 +38,7 @@ public class GA {
             while (parents.size() < this.populationSize) {
                 Individual[] parentPair = Selection.selectRandomPair(population);
 
-                Individual[] offspring = this.crossover.applyUniformCrossover(parentPair[0], parentPair[1]);
+                Individual[] offspring = this.crossover.apply(parentPair[0], parentPair[1]);
 
                 Individual mutatedOffspring1 = this.mutation.applySingleBitMutation(offspring[0]);
                 Individual mutatedOffspring2 = this.mutation.applySingleBitMutation(offspring[1]);

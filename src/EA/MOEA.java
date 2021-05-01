@@ -4,6 +4,7 @@ import EA.Components.Comparators.*;
 import EA.Components.Individual;
 import EA.Operations.Crossover;
 import EA.Operations.Mutation;
+import EA.Operations.NonDominatedRanking;
 import EA.Operations.Selection;
 
 import java.util.*;
@@ -32,13 +33,12 @@ public class MOEA {
 
     public List<Individual> run(List<Individual> population) {
         NonDominatedObjectivesComparator nonDominatedObjectivesComparator = new NonDominatedObjectivesComparator(this.minSeg, this.maxSeg);
+        NonDominatedRanking ranker = new NonDominatedRanking(nonDominatedObjectivesComparator);
+
         this.evaluatePopulation(population);
 
-        population.sort(nonDominatedObjectivesComparator);
+        List<List<Individual>> fronts = ranker.sort(population);
 
-        List<List<Individual>> fronts = frontsByRank(population, nonDominatedObjectivesComparator);
-
-        System.out.println("hei");
         System.out.println("" + fronts.size());
         for (List<Individual> front : fronts) {
             System.out.println("" + front.size());
@@ -47,7 +47,6 @@ public class MOEA {
         List<Integer> nFrontsHistory = new ArrayList<>();
         this.printGenerationStats(0, population, nFrontsHistory);
 
-        List<Individual> oldPopulation = new ArrayList<>(population);
 
         for (int i = 1; i <= this.generations; i++) {
             List<Individual> parents = new ArrayList<>(this.populationSize);
@@ -63,16 +62,9 @@ public class MOEA {
             }
             population.addAll(parents);
             Map<String, double[]> minMaxValues = this.evaluatePopulation(population);
-            try {
-                population.sort(nonDominatedObjectivesComparator);
-            } catch (Exception e) {
-                System.out.println("Sorting feil");
-                population = oldPopulation;
-            }
 
-            fronts = frontsByRank(population, nonDominatedObjectivesComparator);
-            // System.out.println("hei");
-            //System.out.println("" + fronts.size());
+            fronts = ranker.sort(population);
+
             nFrontsHistory.add(fronts.size());
 
             List<Individual> survivors;
@@ -107,12 +99,7 @@ public class MOEA {
                 }
             }
 
-
-            // System.out.println("dudu - " + survivors.size());
-
             population = survivors;
-
-            oldPopulation = new ArrayList<>(population);
 
             if (i % 5 == 0) {
                 this.printGenerationStats(i, population, nFrontsHistory);
@@ -170,12 +157,6 @@ public class MOEA {
             individual.computeSegments();
             Objectives.evaluateIndividual(individual);
         }
-        /*
-        else {
-            System.out.println("Individual did not need evaluation");
-        }
-         */
-
         return new double[]{individual.getEdgeValue(), individual.getConnectivity(), individual.getDeviation()};
     }
 
@@ -321,3 +302,29 @@ public class MOEA {
         );
     }
 }
+
+
+
+
+
+
+/* OLD
+try {
+    population.sort(nonDominatedObjectivesComparator);
+} catch (Exception e) {
+    System.out.println("Sorting feil, her er population");
+    System.out.println("Size: " + population.size());
+    for (Individual individual : population) {
+        String output = "Edge value: " + Utils.formatValue(individual.getEdgeValue()) +
+                "     |     Connectivity measure: " + Utils.formatValue(individual.getConnectivity()) +
+                "     |     Overall deviation: " + Utils.formatValue(individual.getDeviation()) +
+                "     |     Number of segments: " + Utils.formatValue(individual.getSegmentsRGBCentroids().size());
+        System.out.println(output);
+    }
+    //Individual first = population.remove(0);
+    population.sort(nonDominatedObjectivesComparator);
+    //population.add(0, first);
+    // population = oldPopulation;
+}
+
+ */

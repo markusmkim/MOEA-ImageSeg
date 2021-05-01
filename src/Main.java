@@ -40,13 +40,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        Main t = new Main();
-        PixelReader pixelReader = t.image.getPixelReader();
-        Color color = pixelReader.getColor(1, 1);
-        int height = (int) Math.round(t.image.getHeight());
-        int width = (int) Math.round(t.image.getWidth());
-        System.out.println("" + color.getGreen());
-
+        Main main = new Main();
+        PixelReader pixelReader = main.image.getPixelReader();
+        int height = (int) Math.round(main.image.getHeight());
+        int width = (int) Math.round(main.image.getWidth());
+        System.out.println("Running segmentation on " + Config.FILEPATH);
         System.out.println("Height: " + height + " - Width: " + width);
 
         Crossover crossover = new Crossover(Config.CROSSOVER_RATE);
@@ -54,7 +52,6 @@ public class Main extends Application {
         GA geneticAlgorithm = new GA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.FITNESS_WEIGHTS);
         MOEA moea = new MOEA(Config.POPULATION_SIZE, Config.GENERATIONS, crossover, mutation, Config.MIN_SEG, Config.MAX_SEG);
 
-        // Individual ind = new Individual(3, 4);
         List<Individual> population = Initializer.init(Config.POPULATION_SIZE, height, width, pixelReader);
 
         //population = geneticAlgorithm.run(population);

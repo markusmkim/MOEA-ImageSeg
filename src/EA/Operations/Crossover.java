@@ -41,14 +41,14 @@ public class Crossover {
         corresponding genes of the parent genotypes:
          */
         for (int i = 0; i < parent1Genotype.length(); i++ ) {
-            if (Math.random() < 0.95) {
+            if (Math.random() < 0.5) { //0.95
                 child1Genotype.append(parent1Genotype.charAt(i));
             }
             else {
                 child1Genotype.append(parent2Genotype.charAt(i));
             }
 
-            if (Math.random() < 0.05) {
+            if (Math.random() < 0.5) { //0.05
                 child2Genotype.append(parent1Genotype.charAt(i));
             }
             else {
