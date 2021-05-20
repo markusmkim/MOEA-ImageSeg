@@ -2,17 +2,17 @@
 
 public class Config {
 
-    static final String FILEPATH = "data/353013/Test image.jpg";
+    static final String FILEPATH = "data/42044/Test image.jpg";
 
     static final boolean RUN_MOEA = true;
 
     static final int POPULATION_SIZE = 40;
-    static final int GENERATIONS = 20; // 60
+    static final int GENERATIONS = 30; // 60
     static final double CROSSOVER_RATE = 0.9; //  0.6; // 0.3
     static final double MUTATION_RATE = 0.8; // 0.8 // 0.7
 
     static final int MIN_SEG = 6;
-    static final int MAX_SEG = 15;
+    static final int MAX_SEG = 13;
 
 
     // GA
