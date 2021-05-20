@@ -1,5 +1,5 @@
 .idea/
 out/
 *.log
-src/results/optimal/
-src/results/student/
+results/optimal/
+results/student/
