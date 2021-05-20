@@ -6,10 +6,10 @@ public class Config {
 
     static final boolean RUN_MOEA = true;
 
-    static final int POPULATION_SIZE = 40;
-    static final int GENERATIONS = 30; // 60
-    static final double CROSSOVER_RATE = 0.9; //  0.6; // 0.3
-    static final double MUTATION_RATE = 0.8; // 0.8 // 0.7
+    static final int POPULATION_SIZE = 10; // 40
+    static final int GENERATIONS = 10; // 60
+    static final double CROSSOVER_RATE = 0.9;
+    static final double MUTATION_RATE = 0.8;
 
     static final int MIN_SEG = 6;
     static final int MAX_SEG = 13;
