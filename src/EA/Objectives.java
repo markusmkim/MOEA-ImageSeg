@@ -3,7 +3,12 @@ package EA;
 import EA.Components.Individual;
 import javafx.scene.paint.Color;
 
+
 public class Objectives {
+
+    /*
+    Evaluates and assigns the three objective measures to an individual, based on its proposed solution
+     */
     public static void evaluateIndividual(Individual individual) {
         double edgeValue = 0;
         double connectivity = 0;
@@ -31,14 +36,12 @@ public class Objectives {
                         }
 
                         connectivity += 1.0 / 8.0;
-
                     }
                 }
             }
 
             deviation += Metrics.distance(indexColor, individual.getSegmentsRGBCentroids().get(indexSegment));
         }
-
 
         individual.setObjectives(edgeValue, connectivity, deviation);
     }

@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/*
+A node in a rectangular grid. All nodes have 2 - 4 neighbours (North, South, West, East)
+ */
 public class Node implements Comparable<Node> {
-    // A node in a rectangular grid. All nodes have 2 - 4 neighbours (North, South, West, East)
     private final String id;
     private final Color color;
 

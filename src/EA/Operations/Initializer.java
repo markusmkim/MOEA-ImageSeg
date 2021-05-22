@@ -15,12 +15,28 @@ import java.util.Random;
 Population initializer
  */
 public class Initializer {
+
+    /**
+     * Initializes a population of individuals.
+     * To initialize an individual:
+     * - Start with a grid-shaped graph (vertical and horizontal edges) where each node corresponds
+     *   a pixel in the image. The distances of each edge is proportional to the Euclidian distance in RGB-space
+     *   between the neighbouring pixels (nodes).
+     * - Run Prims's algorithm from a random starting node to form a minimum spanning tree
+     * - Convert minimum spanning tree to string representation - this is the genotype
+     * - Initialize individual
+     * @param populationSize number of individuals in population
+     * @param height image height (number of pixels)
+     * @param width image width (number of pixels)
+     * @param pixelReader PixelReader object for image
+     * @return population
+     */
     public static List<Individual> init(Integer populationSize, int height, int width, PixelReader pixelReader) {
 
-        // Build graph
+        // Build graph //
         List<Node> nodes = Builder.buildGrid(height, width, pixelReader);
 
-        // Generate population
+        // Generate population //
         List<Individual> population = new ArrayList<>();
         Random random = new Random();
         for (int i = 0; i < populationSize; i++) {
@@ -32,13 +48,10 @@ public class Initializer {
             MST.PrimsAlgorithm(nodes, MSTstartingIndex);
 
             StringBuilder g = new StringBuilder();
-            // System.out.println(" ");
             for (Node n : nodes) {
-                // System.out.println("Node " + n + " has direction: " + n.getDirection());
                 g.append(n.getDirection());
             }
             String genotype = g.toString();
-            // System.out.println(genotype);
             Individual individual = new Individual(genotype, height, width, pixelReader);
             population.add(individual);
         }

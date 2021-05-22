@@ -1,7 +1,6 @@
 package EA.Components.Comparators;
 
 import EA.Components.Individual;
-
 import java.util.Comparator;
 
 

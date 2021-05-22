@@ -9,13 +9,16 @@ import EA.Operations.Selection;
 import java.util.*;
 
 
+/*
+Simple genetic algorithm with elitism
+ */
 public class GA {
 
     private final int populationSize;
     private final int generations;
     private final Crossover crossover;
     private final Mutation mutation;
-    private final double[] fitnessWeights; // [edgeValue, connectivity, deviation]
+    private final double[] fitnessWeights;  // [edgeValue, connectivity, deviation]
     private final int minSeg;
     private final int maxSeg;
 
@@ -37,28 +40,28 @@ public class GA {
         population.sort(fitnessComparator);
         this.printGenerationStats(0, population);
 
-        for (int i = 1; i <= this.generations; i++) {
-            List<Individual> parents = new ArrayList<>(this.populationSize);
-            while (parents.size() < this.populationSize) {
-                Individual[] parentPair = Selection.selectRandomPair(population);
+        for (int i = 1; i <= this.generations; i++) {                                                                   //  For each generation
+            List<Individual> children = new ArrayList<>(this.populationSize);
+            while (children.size() < this.populationSize) {                                                             //    While number of children < population size
+                Individual[] parentPair = Selection.selectRandomPair(population);                                       //      Select parents
 
-                Individual[] offspring = this.crossover.apply(parentPair[0], parentPair[1]);
+                Individual[] offspring = this.crossover.apply(parentPair[0], parentPair[1]);                            //      Recombine parents and create offspring
 
-                Individual mutatedOffspring1 = this.mutation.applySingleBitMutation(offspring[0]);
+                Individual mutatedOffspring1 = this.mutation.applySingleBitMutation(offspring[0]);                      //      Mutate offspring
                 Individual mutatedOffspring2 = this.mutation.applySingleBitMutation(offspring[1]);
 
-                if (mutatedOffspring1 != parentPair[0]) {
+                if (mutatedOffspring1 != parentPair[0]) {                                                               //      Evaluate offspring
                     this.evaluateIndividual(mutatedOffspring1);
                 }
                 if (mutatedOffspring2 != parentPair[1]) {
                     this.evaluateIndividual(mutatedOffspring2);
                 }
 
-                parents.addAll(Arrays.asList(mutatedOffspring1, mutatedOffspring2));
+                children.addAll(Arrays.asList(mutatedOffspring1, mutatedOffspring2));                                   //    Children = children + offspring
             }
-            population.addAll(parents);
-            population.sort(fitnessComparator);
-            population = population.subList(0, this.populationSize);
+            population.addAll(children);                                                                                //    Population = population = children
+            population.sort(fitnessComparator);                                                                         //    Sort population by fitness
+            population = population.subList(0, this.populationSize);                                                    //    Next generation is N best individuals from population (elitism), N = populationSize
 
             if (i % 10 == 0) {
                 this.printGenerationStats(i, population);

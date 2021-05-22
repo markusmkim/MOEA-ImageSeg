@@ -1,17 +1,21 @@
 package EA.Components;
 
 import EA.Utils;
+
+import java.util.*;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import java.util.*;
 
-
+/*
+Individual in the population evolved by an evolutionary algorithm. Represents a possible solution to the problem.
+ */
 public class Individual {
-    private final String genotype;
+    private final String genotype;          // The segmentations (solution) is implicitly given by the genotype
     private final int height;
     private final int width;
 
@@ -84,6 +88,9 @@ public class Individual {
     }
 
 
+    /*
+    Returns the images (colored and black&white) represented by this individual's genotype
+     */
     public Image[] constructPhenotype() {
         WritableImage type1 = new WritableImage(this.pixelReader, this.width, this.height);
         PixelWriter pixelWriterType1 = type1.getPixelWriter();
@@ -99,26 +106,10 @@ public class Individual {
         for (int i = 0; i < this.genotype.length(); i++) {
             int[] coordinates = Utils.convertIndexToCoordinates(i, this.width);
             int[] neighbourIndexes = Utils.getNeighbourIndexes(i, this.height, this.width, false);
-            for (int j = 0; j < neighbourIndexes.length; j++) {
-                // System.out.println(neighbourIndexes[j]);
-                if (neighbourIndexes[j] == -1 || !this.pixelSegmentMappings.get(i).equals(this.pixelSegmentMappings.get(neighbourIndexes[j]))) {
+            for (int neighbourIndex : neighbourIndexes) {
+                if (neighbourIndex == -1 || !this.pixelSegmentMappings.get(i).equals(this.pixelSegmentMappings.get(neighbourIndex))) {
                     pixelWriterType1.setColor(coordinates[0], coordinates[1], Color.LIME);
                     pixelWriterType2.setColor(coordinates[0], coordinates[1], Color.BLACK);
-
-                    /*
-                    int oppositeIndex;
-                    if (j < 2) {
-                        oppositeIndex = (j + 1) % 2;
-                    }
-                    else {
-                        oppositeIndex = ((j - 1) % 2) + 2;
-                    }
-                    int[] c = Utils.convertIndexToCoordinates(neighbourIndexes[oppositeIndex], this.width);
-                    if (0 <= c[0] && c[0] < this.width && 0 <= c[1] && c[1] < this.height) {
-                        pixelWriterType1.setColor(c[0], c[1], Color.PINK);
-                        pixelWriterType2.setColor(c[0], c[1], Color.BLACK);
-                    }
-                     */
                 }
             }
         }
@@ -126,6 +117,9 @@ public class Individual {
     }
 
 
+    /*
+    Computes and stores the segmentations of the image (the solution) from the genotype
+     */
     public void computeSegments() {
         Map<Integer, Map<String, Double>> segmentsRGBSums = new HashMap<>();
         Map<Integer, Integer> pixelSegmentMappings = new HashMap<>();
@@ -157,7 +151,7 @@ public class Individual {
             if (!pixelSegmentMappings.containsKey(index)){
                 indexesToProcess.remove(Integer.valueOf(index));
             }
-            // processedIndexes.add(index);
+
             int segmentKey;
             Map<String, Double> rgbSums;
             if (pixelSegmentMappings.containsKey(index)) {
@@ -179,9 +173,6 @@ public class Individual {
             }
             segmentsRGBSums.put(segmentKey, rgbSums);
         }
-        // System.out.println("Segment key count: " + pixelSegmentKeyCounter);
-        // pixelSegmentKeys.forEach((key, value) -> System.out.println(key + " " + value));
-        // segmentsRGBSums.forEach((key, value) -> System.out.println(key + " " + value));
         this.pixelSegmentMappings = pixelSegmentMappings;
 
         Map<Integer, Color> segmentsRGBCentroids = new HashMap<>();
@@ -217,6 +208,9 @@ public class Individual {
     }
 
 
+    /*
+    Returns true if the number of segmentations of this solution is between min and max segmentations
+     */
     public boolean isFeasible(int minSeg, int maxSeg) {
         int segmentations = this.segmentsRGBCentroids.size();
         if (segmentations < minSeg) {

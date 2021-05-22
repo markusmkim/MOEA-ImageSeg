@@ -5,8 +5,8 @@ import EA.Components.Individual;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+
 
 public class NonDominatedRanking {
     private final NonDominatedObjectivesComparator comparator;
@@ -16,6 +16,13 @@ public class NonDominatedRanking {
     }
 
 
+    /**
+     * Ranks individuals based on non-dominated sorting, the core of NSGA-II.
+     * Individuals with different ranks are assigned to different fronts.
+     * The first front is the best (pareto front).
+     * @param population the population to rank
+     * @return fronts
+     */
     public List<List<Individual>> sort(List<Individual> population) {
         List<Individual> queue = new ArrayList<>(population);
         List<List<Individual>> fronts = new ArrayList<>();
@@ -36,10 +43,6 @@ public class NonDominatedRanking {
                 List<Individual> homeFront = fronts.get(frontIndex);
                 List<Individual> dominatedInHomeFront = dominates(next, homeFront);
                 for (Individual dominated : dominatedInHomeFront) {
-                    //System.out.println("\n\nRemoving ");
-                    //dominated.printObjectiveValues();
-                    //System.out.println("For ");
-                    //next.printObjectiveValues();
                     homeFront.remove(dominated);
                     queue.add(dominated);
                 }
@@ -61,6 +64,7 @@ public class NonDominatedRanking {
 
         return fronts;
     }
+
 
     /*
     Returns true if individual is dominated by at least one of the individuals in front

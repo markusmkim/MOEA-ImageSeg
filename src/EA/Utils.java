@@ -1,7 +1,7 @@
 package EA;
 
-
 import java.util.Locale;
+
 
 public class Utils {
 
@@ -30,6 +30,7 @@ public class Utils {
 
         return new int[]{east, west, north, south};
     }
+
 
     public static String formatValue(double value) {
         String outputValue = String.format(Locale.ROOT, "%.2f", value);

@@ -12,13 +12,18 @@ Mutation operator
 public class Mutation {
     private final double mutationRate;
 
-
     public Mutation(double mutationRate) {
         this.mutationRate = mutationRate;
     }
 
 
-
+    /**
+     * Apply mutation to single individual.
+     * Mutation rate determines how often mutation is actually applied.
+     * Mutation: Switch a single character to a different random, feasible character.
+     * @param individual the individual to mutate
+     * @return mutated individual
+     */
     public Individual applySingleBitMutation(Individual individual) {
         if (Math.random() > this.mutationRate) {
             return individual;

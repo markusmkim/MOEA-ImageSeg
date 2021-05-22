@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Edge {
 
+/*
+An edge between two nodes
+ */
+public class Edge {
     private final List<Node> nodes;
     private final double distance;
     private final boolean horizontal;
+
 
     public Edge(Node node1, Node node2, boolean horizontal, double distance) {
         this.nodes = new ArrayList<>(Arrays.asList(node1, node2));
@@ -16,8 +20,10 @@ public class Edge {
         this.horizontal = horizontal;
     }
 
+
     public double getDistance()  { return distance; }
     public List<Node> getNodes() { return nodes; }
+
 
     public Node traverse(Node fromNode) {
         if (nodes.get(0) == fromNode) {
@@ -28,6 +34,7 @@ public class Edge {
         }
         return null;
     }
+
 
     public char getTraverseDirection(Node fromNode) {
         if (nodes.get(0) == fromNode) {

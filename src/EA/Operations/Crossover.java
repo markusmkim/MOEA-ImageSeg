@@ -5,18 +5,25 @@ import javafx.scene.image.PixelReader;
 
 import java.util.Random;
 
+
 /*
 Recombination operator
  */
 public class Crossover {
     private final double crossoverRate;
 
-
     public Crossover(double crossoverRate) {
         this.crossoverRate = crossoverRate;
     }
 
 
+    /**
+     * Recombines two parents to produce offspring pair.
+     * Will apply either uniform crossover (20 % of the time) or two-point crossover (80 % of the time)
+     * @param p1 first parent
+     * @param p2 second parent
+     * @return offspring pair
+     */
     public Individual[] apply(Individual p1, Individual p2) {
         if (Math.random() < 0.2) {
             return this.applyTwoPointCrossover(p1, p2);
@@ -41,14 +48,14 @@ public class Crossover {
         corresponding genes of the parent genotypes:
          */
         for (int i = 0; i < parent1Genotype.length(); i++ ) {
-            if (Math.random() < 0.5) { //0.95
+            if (Math.random() < 0.5) {
                 child1Genotype.append(parent1Genotype.charAt(i));
             }
             else {
                 child1Genotype.append(parent2Genotype.charAt(i));
             }
 
-            if (Math.random() < 0.5) { //0.05
+            if (Math.random() < 0.5) {
                 child2Genotype.append(parent1Genotype.charAt(i));
             }
             else {
@@ -94,6 +101,4 @@ public class Crossover {
         Individual child2 = new Individual(child2Genotype, height, width, pixelReader);
         return new Individual[]{child1, child2};
     }
-
-
 }
