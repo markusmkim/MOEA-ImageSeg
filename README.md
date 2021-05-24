@@ -17,10 +17,13 @@ In the context of image segmentation, a given image can be segmented in differen
 For this reason it is a fitting problem to test a MOEA.
 
 #### Objectives
-The three objectives used in the image segmentation are
+Let N be the number of pixels in the image, C be the set of all segments and C<sub>k</sub> denote a specific segment.  
+The three objectives used to segment the image are
 - **Edge value**:  
-  ![EdgeValue](/images/EdgeValue.PNG)
-- 2
+  The edge value is a measure of the difference in the boundary between the segments. It should be maximized and is defined as
+  Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>)  
+  where F<sub>i</sub> indicates the 4 nearest neighbour of pixel i.
+- 2 
 - 3
 
 
