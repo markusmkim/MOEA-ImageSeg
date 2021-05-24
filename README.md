@@ -1,4 +1,4 @@
-# Multi-objective optimization with an evolutionary algorithm
+# Multi-objective optimization with an evolutionary algorithm, applied to image segmentation
 
 A multi-objective evolutionary algorithm (MOEA) can be used to optimize multiple objectives simultaneously. 
 Here, a MOEA is applied to image segmentation by optimizing three objective values at the same time. 
@@ -18,8 +18,8 @@ For this reason it is a fitting problem to test a MOEA.
 
 #### Objectives
 The three objectives used in the image segmentation are
-- 1
-  ![\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}](https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a})
+- **Edge value**:  
+  ![EdgeValue](/images/EdgeValue.PNG)
 - 2
 - 3
 
