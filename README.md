@@ -1,8 +1,9 @@
-# Multi-objective optimization with an evolutionary algorithm, applied to image segmentation
+# A multi-objective evolutionary algorithm applied to image segmentation
 
 A multi-objective evolutionary algorithm (MOEA) can be used to optimize multiple objectives simultaneously. 
-Here, a MOEA is applied to image segmentation by optimizing three objective values at the same time. 
-The MOEA implemented here is very similar to NSGA-II [1], famous for fast non-dominated search and use of elitism.
+Here, a multi-objective genetic algorithm (MOGA) is applied to image segmentation by optimizing three objective values at the same time. 
+The MOGA implemented here is inspired by the work of Ripon et.al [1], and is a variant of
+NSGA-II [2], famous for fast non-dominated search and use of elitism. 
 
 
 #### Pareto front and image segmentation
@@ -17,20 +18,30 @@ In the context of image segmentation, a given image can be segmented in differen
 For this reason it is a fitting problem to test a MOEA.
 
 #### Objectives
-Let N be the number of pixels in the image, C be the set of all segments and C<sub>k</sub> denote a specific segment.  
+Let N be the number of pixels in the image, C be the set of all segments and C<sub>k</sub> denote a specific segment. A pixel is always assigned to exactly one segment. 
 The three objectives used to segment the image are
 - **Edge value**:  
-  The edge value is a measure of the difference in the boundary between the segments. It should be maximized and is defined as
-  Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>)  
-  where F<sub>i</sub> indicates the 4 nearest neighbour of pixel i.
-- 2 
-- 3
-
-
+  The edge value is a measure of the difference in the boundary between the segments. It should be **maximized** and is defined as
+  Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>),  
+  where F<sub>i</sub> indicates the 4 nearest neighbour of pixel, and  
+  x<sub>i, j</sub> = *dist(i, j)* if pixel i and pixel j belongs to different segments, else 0.  
+  The distance function *dist()* is defined as the Euclidean distance in RGB space.
+- **Connectivity measure**:  
+  The connectivity measure evaluates the degree to which neighbouring pixels have been placed in different segments, given by:  
+  Conn(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>),  
+  where F<sub>i</sub> indicates the 8 nearest neighbour of pixel, and  
+  x<sub>i, j</sub> = 1/8 if pixel i and pixel j belongs to different segments, else 0.  
+  Connectivity measure is subject to **minimization**.
+- **Overall deviation**:  
+  Overall deviation measures the difference of the pixels in the same segment, and is subject to **minimization**:  
+  OD(C) = &Sigma;<sub>C<sub>k</sub>&#1013;C</sub>&Sigma;<sub>i&#1013;C<sub>k</sub></sub> *dist(i, &#956;<sub>k</sub>)*,  
+  where &#956;<sub>k</sub> is the centroid of the pixels (average pixel value) in the segment C<sub>k</sub>.
 
 ## Results
 
 
 
 ### References
-[1] Kalyanmoy Deb, Amrit Pratap, Sameer Agarwal and T. Meyarivan: A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II.
+[1] Kazi Shah Nawaz Ripon, Lasker Ershad Ali, Sarfaraz Newaz and Jinwen Ma: A Multi-Objective Evolutionary Algorithm for Color Image Segmentation. 2017
+
+[2] Kalyanmoy Deb, Amrit Pratap, Sameer Agarwal and T. Meyarivan: A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II. 2002.
