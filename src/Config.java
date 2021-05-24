@@ -6,8 +6,8 @@ public class Config {
 
     static final boolean RUN_MOEA = true;
 
-    static final int POPULATION_SIZE = 10; // 40
-    static final int GENERATIONS = 10; // 60
+    static final int POPULATION_SIZE = 40; // 40
+    static final int GENERATIONS = 80; // 60
     static final double CROSSOVER_RATE = 0.9;
     static final double MUTATION_RATE = 0.8;
 

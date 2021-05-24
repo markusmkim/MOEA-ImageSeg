@@ -1,10 +1,10 @@
-import EA.Components.Individual;
-import EA.GA;
-import EA.MOEA;
-import EA.Operations.Crossover;
-import EA.Operations.Initializer;
-import EA.Operations.Mutation;
-import Output.*;
+import ea.components.Individual;
+import ea.GA;
+import ea.MOEA;
+import ea.operations.Crossover;
+import ea.operations.Initializer;
+import ea.operations.Mutation;
+import output.*;
 import evaluator.Evaluator;
 import evaluator.Score;
 
@@ -97,8 +97,9 @@ public class Main extends Application {
 
         for (int i = 0; i < results.size(); i++) {
             Image[] res = results.get(i).constructPhenotype();
+            int segmentations = results.get(i).getSegmentsRGBCentroids().size();
             try {
-                ImageIO.write(SwingFXUtils.fromFXImage(res[0], null), "png", new File(Config.studentColorPath + "c_" + i + ".png"));
+                ImageIO.write(SwingFXUtils.fromFXImage(res[0], null), "png", new File(Config.studentColorPath + "c_" + i + "-(" + segmentations + ").png"));
                 ImageIO.write(SwingFXUtils.fromFXImage(res[1], null), "png", new File(Config.studentBlackWhitePath + "bw_" + i + ".png"));
             } catch (IOException e) {
                 System.out.println("Save error");
