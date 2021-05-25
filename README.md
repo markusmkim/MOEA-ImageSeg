@@ -21,7 +21,7 @@ For this reason it is a fitting problem to test a MOEA.
 Let N be the number of pixels in the image, C be the set of all segments and C<sub>k</sub> denote a specific segment. A pixel is always assigned to exactly one segment. 
 The three objectives used to segment the image are
 - **Edge value**:  
-  The edge value is a measure of the difference in the boundary between the segments. It should be **maximized** and is defined as
+  The edge value is a measure of the difference in the boundary between the segments. It should be **maximized** and is defined as  
   Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>),  
   where F<sub>i</sub> indicates the 4 nearest neighbour of pixel, and  
   x<sub>i, j</sub> = *dist(i, j)* if pixel i and pixel j belongs to different segments, else 0.  
