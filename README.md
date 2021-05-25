@@ -38,7 +38,7 @@ The three objectives used to segment the image are
   where *&#956;<sub>k</sub>* is the centroid of the pixels (average pixel value) in the segment *C<sub>k</sub>*.
 
 ## Results
-
+Results
 
 
 ### References
