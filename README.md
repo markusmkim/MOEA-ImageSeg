@@ -23,19 +23,19 @@ The three objectives used to segment the image are
 - **Edge value**:  
   The edge value is a measure of the difference in the boundary between the segments. It should be **maximized** and is defined as  
   *Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>)*,  
-  where F<sub>i</sub> indicates the 4 nearest neighbour of pixel, and  
-  x<sub>i, j</sub> = *dist(i, j)* if pixel i and pixel j belongs to different segments, else 0.  
+  where *F<sub>i</sub>* indicates the 4 nearest neighbour of pixel, and  
+  *x<sub>i, j</sub> = dist(i, j)* if pixel *i* and pixel *j* belongs to different segments, else 0.  
   The distance function *dist()* is defined as the Euclidean distance in RGB space.
 - **Connectivity measure**:  
   The connectivity measure evaluates the degree to which neighbouring pixels have been placed in different segments, given by:  
-  Conn(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>),  
-  where F<sub>i</sub> indicates the 8 nearest neighbour of pixel, and  
-  x<sub>i, j</sub> = 1/8 if pixel i and pixel j belongs to different segments, else 0.  
+  *Conn(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>)*,  
+  where *F<sub>i</sub>* indicates the 8 nearest neighbour of pixel, and  
+  *x<sub>i, j</sub>* = 1/8 if pixel *i* and pixel *j* belongs to different segments, else 0.  
   Connectivity measure is subject to **minimization**.
 - **Overall deviation**:  
   Overall deviation measures the difference of the pixels in the same segment, and is subject to **minimization**:  
-  OD(C) = &Sigma;<sub>C<sub>k</sub>&#1013;C</sub>&Sigma;<sub>i&#1013;C<sub>k</sub></sub> *dist(i, &#956;<sub>k</sub>)*,  
-  where &#956;<sub>k</sub> is the centroid of the pixels (average pixel value) in the segment C<sub>k</sub>.
+  *OD(C) = &Sigma;<sub>C<sub>k</sub>&#1013;C</sub>&Sigma;<sub>i&#1013;C<sub>k</sub></sub> dist(i, &#956;<sub>k</sub>)*,  
+  where *&#956;<sub>k</sub>* is the centroid of the pixels (average pixel value) in the segment *C<sub>k</sub>*.
 
 ## Results
 
