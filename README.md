@@ -22,7 +22,7 @@ Let N be the number of pixels in the image, C be the set of all segments and C<s
 The three objectives used to segment the image are
 - **Edge value**:  
   The edge value is a measure of the difference in the boundary between the segments. It should be **maximized** and is defined as  
-  Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>),  
+  *Edge(C) = &Sigma;<sub>i&#1013;N</sub>(&Sigma;<sub>j&#1013;F<sub>i</sub></sub> x<sub>i, j</sub>)*,  
   where F<sub>i</sub> indicates the 4 nearest neighbour of pixel, and  
   x<sub>i, j</sub> = *dist(i, j)* if pixel i and pixel j belongs to different segments, else 0.  
   The distance function *dist()* is defined as the Euclidean distance in RGB space.
