@@ -14,7 +14,7 @@ will try to find many Pareto-optimal solutions in the same run.
 Optimally, the Pareto front obtained should contain an even spread of solutions.
 For this, an explicit diversity-preserving mechanism called Crowding Distance is used.
 
-In the context of image segmentation, a given image can be segmented in different equally good ways.
+In the context of image segmentation, a given image can be segmented in different equally good ways (different number of segments).
 For this reason it is a fitting problem to test a MOEA.
 
 #### Objectives

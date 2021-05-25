@@ -11,8 +11,8 @@ public class Config {
     static final double CROSSOVER_RATE = 0.9;
     static final double MUTATION_RATE = 0.8;
 
-    static final int MIN_SEG = 6;
-    static final int MAX_SEG = 13;
+    static final int MIN_SEG = 2;
+    static final int MAX_SEG = 20;
 
 
     // GA
