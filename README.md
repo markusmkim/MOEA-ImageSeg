@@ -62,15 +62,15 @@ Original | 10 segmentations | 18 segmentations | 25 segmentations
 
 
 #### Image 353013
-Original | 6 segmentations | 9 segmentations | 14 segmentations | 19 segmentations
------------- | ------------- | ------------- | ------------- | -------------    
-![original](/src/data/353013/Test%20image.jpg) | ![19](/src/results/353013/c_49-(6).png) | ![5](/src/results/353013/c_30-(9).png) | ![27](/src/results/353013/c_26-(14).png) | ![0](/src/results/353013/c_31-(19).png)
+Original | 6 segmentations | 9 segmentations | 19 segmentations
+------------ | ------------- | ------------- | -------------    
+![original](/src/data/353013/Test%20image.jpg) | ![19](/src/results/353013/c_49-(6).png) | ![5](/src/results/353013/c_30-(9).png) | ![0](/src/results/353013/c_31-(19).png)
 
 
 #### Image 76002
-Original | 12 segmentations | 20 segmentations
------------- | ------------- | -------------    
-![original](/src/data/76002/Test%20image.jpg) | ![19](/src/results/76002/c_9-(12).png) | ![27](/src/results/76002/c_31-(20).png)
+Original | 12 segmentations | 14 segmentations | 20 segmentations
+------------ | ------------- | ------------- | -------------    
+![original](/src/data/76002/Test%20image.jpg) | ![19](/src/results/76002/c_9-(12).png) | ![5](/src/results/76002/c_22-(14).png) | ![27](/src/results/76002/c_31-(20).png)
 
 
 ## References
