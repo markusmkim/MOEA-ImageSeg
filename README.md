@@ -63,7 +63,7 @@ Original | 8 segmentations | 13 segmentations | 22 segmentations | 57 segmentati
 #### Image 299086
 Original | 10 segmentations | 18 segmentations | 18 segmentations | 25 segmentations
 ------------ | ------------- | ------------- | ------------- | -------------    
-![original](/src/data/299086/Test%20image.jpg) | ![19](/src/results/299086/c_3-(10).png) | ![5](/src/results/299086/c_31-(18).png) | ![27](/src/results/299086/c_36-(18).png) | ![0](/src/results/299086/c_11-(25).png)
+![original](/src/data/299086/Test%20Image.jpg) | ![19](/src/results/299086/c_3-(10).png) | ![5](/src/results/299086/c_31-(18).png) | ![27](/src/results/299086/c_36-(18).png) | ![0](/src/results/299086/c_11-(25).png)
 
 
 #### Image 76002
