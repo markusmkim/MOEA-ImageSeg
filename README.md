@@ -40,30 +40,25 @@ The three objectives used to segment the image are
 ## Results
 The images are taken from DATASET.   
 For each image, the original image is shown together with 4 solutions proposed by the algorithm. 
-All 4 solutions are selected from same Pareto front from a single run. 
-
-#### Image 147091  
-Original | 8 segmentations | 10 segmentations | 20 segmentations | 31 segmentations
------------- | ------------- | ------------- | ------------- | -------------    
-![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(8).png) | ![5](/src/results/147091/c_5-(10).png) | ![27](/src/results/147091/c_27-(20).png) | ![0](/src/results/147091/c_0-(31).png)  
+All 4 solutions are selected from same Pareto front from a single run.
 
 
 #### Image 147091
-Original | 8 segmentations | 10 segmentations | 31 segmentations
+Original | 8 segmentations | 10 segmentations | 20 segmentations
 ------------ | ------------- | ------------- | -------------    
-![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(8).png) | ![5](/src/results/147091/c_5-(10).png) | ![0](/src/results/147091/c_0-(31).png)
+![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(8).png) | ![5](/src/results/147091/c_5-(10).png) | ![0](/src/results/147091/c_27-(20).png)
 
 
 #### Image 118035
-Original | 8 segmentations | 13 segmentations | 22 segmentations | 57 segmentations
------------- | ------------- | ------------- | ------------- | -------------    
-![original](/src/data/118035/Test%20image.jpg) | ![19](/src/results/118035/c_10-(8).png) | ![5](/src/results/118035/c_28-(13).png) | ![27](/src/results/118035/c_23-(22).png) | ![0](/src/results/118035/c_3-(57).png)
+Original | 8 segmentations | 13 segmentations | 57 segmentations
+------------ | ------------- | ------------- | -------------    
+![original](/src/data/118035/Test%20image.jpg) | ![19](/src/results/118035/c_10-(8).png) | ![5](/src/results/118035/c_28-(13).png) | ![0](/src/results/118035/c_3-(57).png)
 
 
 #### Image 299086
-Original | 10 segmentations | 18 segmentations | 18 segmentations | 25 segmentations
------------- | ------------- | ------------- | ------------- | -------------    
-![original](/src/data/299086/Test%20Image.jpg) | ![19](/src/results/299086/c_3-(10).png) | ![5](/src/results/299086/c_31-(18).png) | ![27](/src/results/299086/c_36-(18).png) | ![0](/src/results/299086/c_11-(25).png)
+Original | 10 segmentations | 18 segmentations | 25 segmentations
+------------ | ------------- | ------------- | -------------    
+![original](/src/data/299086/Test%20Image.jpg) | ![19](/src/results/299086/c_3-(10).png) | ![5](/src/results/299086/c_31-(18).png) | ![0](/src/results/299086/c_11-(25).png)
 
 
 #### Image 76002
