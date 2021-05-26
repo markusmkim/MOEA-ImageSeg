@@ -40,7 +40,7 @@ The three objectives used to segment the image are
 ## Results
 The images are taken from *The Berkeley Segmentation Dataset (BSDS500)*.   
 For each image, the original image is shown together with 4 solutions proposed by the algorithm. 
-All 4 solutions are selected from same Pareto front from a single run.
+All 4 solutions are selected from the obtained Pareto front from **a single run**.
 
 
 #### Image 147091
