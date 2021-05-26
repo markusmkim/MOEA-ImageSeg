@@ -41,10 +41,10 @@ The three objectives used to segment the image are
 The images are taken from DATASET.   
 For each image, the original image is shown together with 4 solutions proposed by the algorithm. 
 All 4 solutions are selected from same Pareto front from a single run. 
-- Image 147091
-  Progression of learning | Averaged progression | Last game
+- Image 147091  
+  Original | 8 segmentations | 10 segmentations | 20 segmentations | 31 segmentations
   ------------ | ------------- | ------------- | ------------- | -------------    
-  ![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(31).png) | ![5](/src/results/147091/c_5-(31).png) | ![27](/src/results/147091/c_27-(31).png) | ![0](/src/results/147091/c_0-(31).png)  
+  ![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(8).png) | ![5](/src/results/147091/c_5-(10).png) | ![27](/src/results/147091/c_27-(20).png) | ![0](/src/results/147091/c_0-(31).png)  
 - Image 118035
 - Image 299086
 - Image 76002
