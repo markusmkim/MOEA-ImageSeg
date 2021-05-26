@@ -60,9 +60,23 @@ Original | 8 segmentations | 13 segmentations | 22 segmentations | 57 segmentati
 ![original](/src/data/118035/Test%20image.jpg) | ![19](/src/results/118035/c_10-(8).png) | ![5](/src/results/118035/c_28-(13).png) | ![27](/src/results/118035/c_23-(22).png) | ![0](/src/results/118035/c_3-(57).png)
 
 
-- Image 299086
-- Image 76002
-- Image 353013
+#### Image 299086
+Original | 10 segmentations | 18 segmentations | 18 segmentations | 25 segmentations
+------------ | ------------- | ------------- | ------------- | -------------    
+![original](/src/data/299086/Test%20image.jpg) | ![19](/src/results/299086/c_3-(10).png) | ![5](/src/results/299086/c_31-(18).png) | ![27](/src/results/299086/c_36-(18).png) | ![0](/src/results/299086/c_11-(25).png)
+
+
+#### Image 76002
+Original | 12 segmentations | 14 segmentations | 20 segmentations | 26 segmentations
+------------ | ------------- | ------------- | ------------- | -------------    
+![original](/src/data/76002/Test%20image.jpg) | ![19](/src/results/76002/c_9-(12).png) | ![5](/src/results/76002/c_22-(14).png) | ![27](/src/results/76002/c_31-(20).png) | ![0](/src/results/76002/c_10-(26).png)
+
+
+#### Image 353013
+Original | 6 segmentations | 9 segmentations | 14 segmentations | 19 segmentations
+------------ | ------------- | ------------- | ------------- | -------------    
+![original](/src/data/353013/Test%20image.jpg) | ![19](/src/results/353013/c_49-(6).png) | ![5](/src/results/353013/c_30-(9).png) | ![27](/src/results/353013/c_26-(14).png) | ![0](/src/results/353013/c_31-(19).png)
+
 
 ## References
 [1] Kazi Shah Nawaz Ripon, Lasker Ershad Ali, Sarfaraz Newaz and Jinwen Ma: A Multi-Objective Evolutionary Algorithm for Color Image Segmentation. 2017
