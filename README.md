@@ -53,12 +53,18 @@ Original | 8 segmentations | 10 segmentations | 31 segmentations
 ------------ | ------------- | ------------- | -------------    
 ![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(8).png) | ![5](/src/results/147091/c_5-(10).png) | ![0](/src/results/147091/c_0-(31).png)
 
-Image 118035
+
+#### Image 118035
+Original | 8 segmentations | 13 segmentations | 22 segmentations | 57 segmentations
+------------ | ------------- | ------------- | ------------- | -------------    
+![original](/src/data/118035/Test%20image.jpg) | ![19](/src/results/118035/c_10-(8).png) | ![5](/src/results/118035/c_28-(13).png) | ![27](/src/results/118035/c_23-(22).png) | ![0](/src/results/118035/c_3-(57).png)
+
+
 - Image 299086
 - Image 76002
 - Image 353013
 
-### References
+## References
 [1] Kazi Shah Nawaz Ripon, Lasker Ershad Ali, Sarfaraz Newaz and Jinwen Ma: A Multi-Objective Evolutionary Algorithm for Color Image Segmentation. 2017
 
 [2] Kalyanmoy Deb, Amrit Pratap, Sameer Agarwal and T. Meyarivan: A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II. 2002.
