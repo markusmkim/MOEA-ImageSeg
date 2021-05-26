@@ -38,8 +38,17 @@ The three objectives used to segment the image are
   where *&#956;<sub>k</sub>* is the centroid of the pixels (average pixel value) in the segment *C<sub>k</sub>*.
 
 ## Results
-Results
-
+The images are taken from DATASET.   
+For each image, the original image is shown together with 4 solutions proposed by the algorithm. 
+All 4 solutions are selected from same Pareto front from a single run. 
+- Image 147091
+  Progression of learning | Averaged progression | Last game
+  ------------ | ------------- | ------------- | -------------
+  ![original](/src/data/147091/Test%20image.jpg) | ![19](/src/results/147091/c_19-(31).png) | ![5](/src/results/147091/c_5-(31).png) | ![27](/src/results/147091/c_27-(31).png) | ![0](/src/results/147091/c_0-(31).png) |
+- Image 118035
+- Image 299086
+- Image 76002
+- Image 353013
 
 ### References
 [1] Kazi Shah Nawaz Ripon, Lasker Ershad Ali, Sarfaraz Newaz and Jinwen Ma: A Multi-Objective Evolutionary Algorithm for Color Image Segmentation. 2017
