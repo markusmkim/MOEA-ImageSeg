@@ -38,7 +38,7 @@ The three objectives used to segment the image are
   where *&#956;<sub>k</sub>* is the centroid of the pixels (average pixel value) in the segment *C<sub>k</sub>*.
 
 ## Results
-The images are taken from DATASET.   
+The images are taken from *The Berkeley Segmentation Dataset (BSDS500)*.   
 For each image, the original image is shown together with 4 solutions proposed by the algorithm. 
 All 4 solutions are selected from same Pareto front from a single run.
 
@@ -61,16 +61,16 @@ Original | 10 segmentations | 18 segmentations | 25 segmentations
 ![original](/src/data/299086/Test%20Image.jpg) | ![19](/src/results/299086/c_3-(10).png) | ![5](/src/results/299086/c_31-(18).png) | ![0](/src/results/299086/c_11-(25).png)
 
 
-#### Image 76002
-Original | 12 segmentations | 14 segmentations | 20 segmentations | 26 segmentations
------------- | ------------- | ------------- | ------------- | -------------    
-![original](/src/data/76002/Test%20image.jpg) | ![19](/src/results/76002/c_9-(12).png) | ![5](/src/results/76002/c_22-(14).png) | ![27](/src/results/76002/c_31-(20).png) | ![0](/src/results/76002/c_10-(26).png)
-
-
 #### Image 353013
 Original | 6 segmentations | 9 segmentations | 14 segmentations | 19 segmentations
 ------------ | ------------- | ------------- | ------------- | -------------    
 ![original](/src/data/353013/Test%20image.jpg) | ![19](/src/results/353013/c_49-(6).png) | ![5](/src/results/353013/c_30-(9).png) | ![27](/src/results/353013/c_26-(14).png) | ![0](/src/results/353013/c_31-(19).png)
+
+
+#### Image 76002
+Original | 12 segmentations | 20 segmentations
+------------ | ------------- | -------------    
+![original](/src/data/76002/Test%20image.jpg) | ![19](/src/results/76002/c_9-(12).png) | ![27](/src/results/76002/c_31-(20).png)
 
 
 ## References
